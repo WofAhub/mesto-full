@@ -1,0 +1,34 @@
+.profile__info {
+  /* Экран */
+  max-width: 336px;
+  display: grid;
+  column-gap: 18px;
+  row-gap: 7px;
+
+  /* Разметка */
+  grid-template-areas:
+    "profile__name profile__button_type_edit-button"
+    "profile__description profile__description";
+
+  /* Отступы */
+  padding: 0;
+  margin: 0 auto 0 0;
+}
+
+@media screen and (max-width: 970px) {
+  .profile__info {
+    /* Экран */
+    position: relative;
+    max-width: 189px;
+    column-gap: 0;
+    row-gap: 5px;
+
+    /* Разметка */
+    grid-template-areas:
+      "profile__name"
+      "profile__description";
+
+    /* Отступы */
+    margin: 0 0 36px 0;
+  }
+}

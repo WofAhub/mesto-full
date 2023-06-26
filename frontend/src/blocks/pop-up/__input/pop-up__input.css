@@ -1,0 +1,36 @@
+/* Placeholder: замена цвета */
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #C4C4C4;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #C4C4C4;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #C4C4C4;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #C4C4C4;
+}
+
+.pop-up__input {
+  /* Экран */
+  height: 27px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  /* Стиль */
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #cccccc;
+  outline: none;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}

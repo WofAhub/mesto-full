@@ -1,0 +1,16 @@
+.register {
+  /* Экран */
+  display: flex;
+
+  /* Текст */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #ffffff;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}

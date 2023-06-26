@@ -1,0 +1,9 @@
+.pop-up__infotooltip-img {
+  /* экран */
+  max-width: 120px;
+  max-height: 120px;
+
+  /* отступы */
+  margin: 0;
+  padding: 0;
+}

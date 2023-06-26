@@ -1,0 +1,26 @@
+.header {
+  /* Экран */
+  max-width: 68.75%;
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(84, 84, 84, 70%);
+  box-sizing: border-box;
+
+  /* Отступы */
+  padding: 0;
+  margin: 0 0 0 15.625%;
+}
+
+@media screen and (max-width: 568px) {
+  .header {
+    /* Экран */
+    max-width: 100%;
+    min-height: 56px;
+
+    /* Отступы */
+    padding: 0 8.438% 0 8.438%;
+    margin: 0;
+  }
+}

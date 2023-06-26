@@ -1,0 +1,11 @@
+.element__items {
+  /* Экран */
+  width: 246px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* Отступы */
+  padding: 0;
+  margin: 25px auto auto;
+}

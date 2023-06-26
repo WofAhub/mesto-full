@@ -1,0 +1,20 @@
+.authorization__heading {
+  /* Текст */
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 568px) {
+  .authorization__heading {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

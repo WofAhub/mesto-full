@@ -1,0 +1,18 @@
+.profile {
+  /* Экран */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Отступы */
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (max-width: 970px) {
+  .profile {
+    /* Экран */
+    flex-direction: column;
+  }
+}

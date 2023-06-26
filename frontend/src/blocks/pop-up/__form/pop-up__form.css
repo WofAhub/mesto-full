@@ -1,0 +1,12 @@
+.pop-up__form{
+  /* Экран */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}

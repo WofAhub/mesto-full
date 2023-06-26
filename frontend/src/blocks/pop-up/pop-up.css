@@ -1,0 +1,15 @@
+.pop-up {
+  /* Экран */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+
+  /* Расположение */
+  z-index: 2;
+}

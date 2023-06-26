@@ -1,0 +1,19 @@
+.header__user-email {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #FFFFFF;
+
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 736px) {
+  .header__user-email {
+    display: none;
+  }
+
+}

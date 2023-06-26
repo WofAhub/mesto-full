@@ -1,0 +1,12 @@
+.authorization__form-box {
+  /* Экран */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 429px;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}

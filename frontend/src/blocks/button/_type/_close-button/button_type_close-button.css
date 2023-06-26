@@ -1,0 +1,23 @@
+.button_type_close-button {
+  /* Экран */
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+
+  /* Стиль */
+  background-image: url(../../../../images/close-button.svg);
+  background-size: cover;
+  border: none;
+}
+
+@media screen and (max-width: 568px) {
+  .button_type_close-button {
+    /* Экран */
+    width: 20px;
+    height: 20px;
+    top: -39px;
+    right: 0;
+  }
+}

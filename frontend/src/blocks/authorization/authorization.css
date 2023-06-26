@@ -1,0 +1,17 @@
+.authorization {
+  /* Экран */
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+
+
+  /* Текст */
+  color: white;
+
+  /* Отступы */
+  margin:  60px 0 0 0;
+  padding: 0;
+}

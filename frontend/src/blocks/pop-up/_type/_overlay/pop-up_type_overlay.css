@@ -1,0 +1,17 @@
+.pop-up_type_overlay {
+  /* Экран */
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  /* Стиль */
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+
+  /* Анимация */
+  transform: translateY(-30.5%) scale(0);
+  transition: 0.4s ease-in-out;
+}

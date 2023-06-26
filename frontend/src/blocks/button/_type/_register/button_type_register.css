@@ -1,0 +1,13 @@
+.button_type_register {
+  /* Текст */
+  color: white;
+
+  /* Стиль */
+  background-color: transparent;
+  border: none;
+  text-decoration: none;
+
+  /* Отступы */
+  margin: 0 0 0 5px;
+  padding: 0;
+}

@@ -1,0 +1,21 @@
+.authorization__button-submit {
+  /* Экран */
+  width: 100%;
+  height: 50px;
+
+  /* Стиль */
+  background-color: white;
+  border: none;
+
+  /* Текст */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #000000;
+
+  /* Отступы */
+  margin: 0;
+  padding: 0;
+}

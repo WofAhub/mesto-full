@@ -1,0 +1,15 @@
+.header__container {
+  /* Экран */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  /* Текст */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-align: right;
+}
