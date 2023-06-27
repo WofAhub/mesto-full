@@ -1,10 +1,11 @@
 // const база
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const User = require('../models/user');
 
-// const подпись токена
-const { signToken } = require('../utils/jwtAuth');
+// const, связанный с env
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 // const ошибки
 const MONGO_DUBLICATE_ERROR = 11000;
@@ -66,10 +67,12 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = signToken({
-        _id: user._id,
-      });
-      res.status(200).send({ token });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
+      return res.send({ token });
     })
     .catch(next);
 };

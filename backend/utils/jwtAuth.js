@@ -8,12 +8,6 @@ function checkToken(token) {
   return jwt.verify(token, SECRET_KEY);
 }
 
-// подпись токена
-function signToken(payload) {
-  return jwt.sign(payload, SECRET_KEY, { expiresIn: '7d' });
-}
-
 module.exports = {
   checkToken,
-  signToken,
 };
