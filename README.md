@@ -5,12 +5,12 @@
   
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/...
+Адрес репозитория: https://github.com/WofAhub/mesto-full
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.12.89
 
-Frontend https://...
+Frontend https://github.com/WofAhub/react-mesto-auth
 
-Backend https://...
+Backend https://github.com/WofAhub/express-mesto-gha
