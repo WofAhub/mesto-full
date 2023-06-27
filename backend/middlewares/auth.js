@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const { checkToken } = require('../utils/jwtAuth');
 const UnauthorizedError = require('../errors/UnauthorizedError');
+
+// const, связанный с env
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => { // eslint-disable-line
   const { authorization } = req.headers;
@@ -14,7 +17,7 @@ module.exports = (req, res, next) => { // eslint-disable-line
   let payload;
 
   try {
-    payload = checkToken(token);
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
     req.user = {
       _id: new mongoose.Types.ObjectId(payload._id),
     };
