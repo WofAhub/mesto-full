@@ -61,7 +61,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, useEffect2: ${err}`);
       })
-  }, [token])
+  }, [navigate, token])
 
   // регистрация
   function registerUser({ email, password }) {
@@ -106,6 +106,27 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
+  }
+
+    // запрос на текущие данные о пользователе и получение карточек
+  React.useEffect(() => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
+        setCurrentUser(user);
+        setCards(card);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, []);
+
+  // разлогин
+  function logOutUser() {
+    localStorage.removeItem("jwt");
+    setLoggedIn(false);
+    setToken("");
+    setUserData("");
+    navigate('/sign-in', { replace: true });
   }
 
   // попап информации о регистрации
@@ -216,27 +237,6 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, handleCardDelete: ${err}`);
       });
-  }
-
-  // запрос на текущие данные о пользователе и получение карточек
-  React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
-  }, []);
-
-  // разлогин
-  function logOutUser() {
-    localStorage.removeItem("jwt");
-    setLoggedIn(false);
-    setToken("");
-    setUserData("");
-    navigate('/sign-in', { replace: true });
   }
 
   return (
