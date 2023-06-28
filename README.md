@@ -12,6 +12,6 @@ https://wofamesto.nomoreparties.sbs/sign-up
 
 IP-адрес <51.250.12.89>
 
-Frontend https://github.com/WofAhub/react-mesto-auth
+Frontend https://wofamesto.nomoreparties.sbs
 
-Backend https://github.com/WofAhub/express-mesto-gha
+Backend https://api.wofamesto.nomoreparties.sbs

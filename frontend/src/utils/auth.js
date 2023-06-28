@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
 function checkAnswerFromServer(res) {
     if (res.ok) {
