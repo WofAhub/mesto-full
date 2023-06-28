@@ -108,6 +108,5 @@ export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
     'Content-Type': 'application/json',
-    authorization: 'cd4d145b-9e9e-4f82-a2f9-6061f94b66ca'
   }
 })
