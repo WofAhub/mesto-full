@@ -1,5 +1,6 @@
 const allowedCors = [
   'http://wofamesto.nomoreparties.sbs',
+  'https://wofamesto.nomoreparties.sbs',
   'https://api.wofamesto.nomoreparties.sbs',
   'localhost:3000',
 ];
