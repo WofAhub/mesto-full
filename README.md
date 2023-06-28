@@ -10,7 +10,7 @@ https://wofamesto.nomoreparties.sbs/sign-up
 
 ## Ссылки на проект
 
-IP-адрес <51.250.12.89>
+IP 51.250.12.89
 
 Frontend https://wofamesto.nomoreparties.sbs
 
