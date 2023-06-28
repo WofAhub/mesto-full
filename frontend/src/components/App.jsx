@@ -98,7 +98,7 @@ function App() {
   function loginUser({ email, password }) {
     auth.login(email, password)
       .then((token) => {
-        localStorage.setItem("jwt", token);
+        localStorage.getItem("jwt", token);
         setToken(token);
         setUserData(email);
         navigate('/', { replace: true });
