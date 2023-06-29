@@ -101,6 +101,7 @@ function App() {
         localStorage.setItem("jwt", token);
         setToken(token);
         setUserData(email);
+        setLoggedIn(true);
         navigate('/', { replace: true });
       })
       .catch((err) => {
