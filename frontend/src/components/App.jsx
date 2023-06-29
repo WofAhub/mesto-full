@@ -46,18 +46,6 @@ function App() {
     setToken(jwt);
   }, []);
 
- // запрос на текущие данные о пользователе и получение карточек
- React.useEffect(() => {
-   Promise.all([api.getCurrentUser(), api.getInitialCards()])
-     .then(([user, card]) => {
-       setCurrentUser(user);
-       setCards(card);
-     })
-     .catch((err) => {
-       console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-     });
- }, []);
-
   // получить контент
   React.useEffect(() => {
     if (!token) {
@@ -119,6 +107,18 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
+
+   // запрос на текущие данные о пользователе и получение карточек
+  React.useEffect(() => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
+        setCurrentUser(user);
+        setCards(card);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, []);
 
   // разлогин
   function logOutUser() {
