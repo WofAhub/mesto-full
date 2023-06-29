@@ -42,8 +42,8 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    api.setToken(token);
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
   }, []);
 
   // получить контент
@@ -108,7 +108,10 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
-  
+
+  // устанавливаю токен
+  api.setToken(token);
+
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
