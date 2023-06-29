@@ -65,6 +65,7 @@ class Api {
   // получаем информацию о пользователе
   getCurrentUser() {
     return fetch (`${this._fetchUrl}/users/me`, {
+      method: "GET",
       headers: this._headers
     })
     .then(this._getJson);
