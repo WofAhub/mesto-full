@@ -16,6 +16,7 @@ class Api {
   // получаем карточки с сервера
   getInitialCards() {
     return fetch(`${this._fetchUrl}/cards`, {
+      method: "GET",
       headers: this._headers,
     })
     .then(this._getJson)
