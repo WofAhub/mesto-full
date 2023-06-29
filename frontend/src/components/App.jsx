@@ -46,6 +46,18 @@ function App() {
     setToken(jwt);
   }, []);
 
+ // запрос на текущие данные о пользователе и получение карточек
+ React.useEffect(() => {
+   Promise.all([api.getCurrentUser(), api.getInitialCards()])
+     .then(([user, card]) => {
+       setCurrentUser(user);
+       setCards(card);
+     })
+     .catch((err) => {
+       console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+     });
+ }, []);
+
   // получить контент
   React.useEffect(() => {
     if (!token) {
@@ -108,18 +120,6 @@ function App() {
       });
   }
 
-    // запрос на текущие данные о пользователе и получение карточек
-  React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
-  }, []);
-
   // разлогин
   function logOutUser() {
     localStorage.removeItem("jwt");
@@ -154,6 +154,7 @@ function App() {
     setSelectedCard(card);
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   function closeAllPopups() {
     isSetEditAvatarPopupOpen(false);
     isSetEditProfilePopupOpen(false);
