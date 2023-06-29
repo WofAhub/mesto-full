@@ -151,7 +151,7 @@ function App() {
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
-      auth.getToken(token).then((res) => {
+      auth.getContent(token).then((res) => {
         if (res) {
           setLoggedIn(true);
           setUserData(res.email);
