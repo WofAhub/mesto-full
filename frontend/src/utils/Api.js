@@ -114,6 +114,7 @@ class Api {
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
+    "Authorization": '"Bearer" + token',
     'Content-Type': 'application/json',
   }
 })
