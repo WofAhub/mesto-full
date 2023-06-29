@@ -106,14 +106,15 @@ class Api {
   }
 
   // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`; 
-  } 
+  // setToken(token) { 
+  //   this._headers.Authorization = `Bearer ${token}`; 
+  // } 
 }
 
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
+    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
     'Content-Type': 'application/json',
   }
 })
