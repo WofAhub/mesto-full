@@ -110,6 +110,10 @@ function App() {
       });
   }
 
+  React.useEffect((token) => {
+    api.setToken(token);
+  })
+
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
