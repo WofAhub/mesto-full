@@ -43,8 +43,6 @@ function App() {
 
   // получить контент
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
     if (!token) {
       return;
     }
