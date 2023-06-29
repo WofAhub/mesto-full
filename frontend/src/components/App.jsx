@@ -115,6 +115,7 @@ function App() {
       .then(([user, card]) => {
         setCurrentUser(user);
         setCards(card);
+        api.setToken(token);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
