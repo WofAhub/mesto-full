@@ -109,13 +109,15 @@ function App() {
       });
   }
 
+  // установка токена
+  api.setToken(token);
+
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
       .then(([user, card]) => {
         setCurrentUser(user);
         setCards(card);
-        api.setToken(token);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
