@@ -42,8 +42,8 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
   }, []);
 
   // получить контент
@@ -98,6 +98,7 @@ function App() {
   function loginUser({ email, password }) {
     auth.login(email, password)
       .then((token) => {
+        api.setToken(token);
         localStorage.setItem("jwt", token);
         setToken(token);
         setUserData(email);
