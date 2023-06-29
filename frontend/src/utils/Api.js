@@ -15,18 +15,28 @@ class Api {
 
   // получаем карточки с сервера
   getInitialCards() {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._fetchUrl}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(this._getJson)
   }
 
   // создаем новые карточки на сервер
   createCardByPopup(data) {
+    const token = localStorage.getItem('jwt');
+
     return fetch (`${this._fetchUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -37,45 +47,70 @@ class Api {
 
   // удалить карточку
   deleteCard(id) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._fetchUrl}/cards/${id}`, {
       method: "DELETE",
-      headers: this._headers
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(this._getJson);
   }
 
   // поставить лайк
   like(id) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "PUT",
-      headers: this._headers
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(this._getJson);
   }
 
   // убрать лайк
   dislike(id) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "DELETE",
-      headers: this._headers
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(this._getJson);
   }
 
   // получаем информацию о пользователе
   getCurrentUser() {
+    const token = localStorage.getItem('jwt');
+
     return fetch (`${this._fetchUrl}/users/me`, {
       method: "GET",
-      headers: this._headers
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
     })
     .then(this._getJson);
   }
 
   // редактирование информации о пользователе через попап Профиля
   editUserInfo(data) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._fetchUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -86,9 +121,14 @@ class Api {
 
   // редактирование аватара пользователя через попап Аватара
   editUserAvatar(data) {
+    const token = localStorage.getItem('jwt');
+    
     return fetch(`${this._fetchUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -104,11 +144,6 @@ class Api {
       return this.dislike(cardId);
     }
   }
-
-  // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`; 
-  } 
 }
 
 export const api = new Api({
