@@ -36,7 +36,7 @@ function App() {
 
   // const авторизация
   const [isloggedIn, setLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
+  // const [token, setToken] = React.useState('')
   const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
 
@@ -144,7 +144,6 @@ function App() {
   function logOutUser() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
-    setToken("");
     setUserData("");
     navigate('/sign-in', { replace: true });
   }
