@@ -112,7 +112,7 @@ function App() {
 
   React.useEffect((token) => {
     api.setToken(token);
-  })
+  }, [token])
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
