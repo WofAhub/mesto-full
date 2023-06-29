@@ -48,15 +48,26 @@ function App() {
 
  // запрос на текущие данные о пользователе и получение карточек
  React.useEffect(() => {
-   Promise.all([api.getCurrentUser(), api.getInitialCards()])
-     .then(([user, card]) => {
-       setCurrentUser(user);
-       setCards(card);
-     })
-     .catch((err) => {
-       console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-     });
- }, []);
+  if(!isloggedIn) {
+    return undefined;
+  } else {
+  api.getUserInfoApi()
+    .then((user) => {
+      setCurrentUser(user)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+  api.getInitialCards()
+    .then((res) => {
+        setCards(res);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}
+}, [isloggedIn]);
 
   // получить контент
   React.useEffect(() => {
