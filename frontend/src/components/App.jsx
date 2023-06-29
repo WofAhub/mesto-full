@@ -41,9 +41,8 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
-  React.useEffect((token) => {
+  React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    api.setToken(token);
     setToken(jwt);
   }, []);
 
