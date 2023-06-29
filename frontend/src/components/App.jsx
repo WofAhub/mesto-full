@@ -56,6 +56,7 @@ function App() {
       .then((res) => {
         setUserData(res.data.email);
         setLoggedIn(true);
+        api.setToken(token);
         navigate('/', { replace: true });
       })
       .catch((err) => {
@@ -108,9 +109,6 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
-
-  // установка токена
-  api.setToken(token);
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
