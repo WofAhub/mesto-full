@@ -41,13 +41,10 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
+  // получить контент
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     setToken(jwt);
-  }, []);
-
-  // получить контент
-  React.useEffect(() => {
     if (!token) {
       return;
     }
@@ -56,7 +53,6 @@ function App() {
       .then((res) => {
         setUserData(res.data.email);
         setLoggedIn(true);
-        api.setToken(res.token)
         navigate('/', { replace: true });
       })
       .catch((err) => {

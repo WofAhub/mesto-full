@@ -106,9 +106,9 @@ class Api {
   }
 
   // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`; 
-  } 
+  // setToken(token) { 
+  //   this._headers.Authorization = `Bearer ${token}`; 
+  // } 
 }
 
 export const api = new Api({
