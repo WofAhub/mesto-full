@@ -100,7 +100,6 @@ function App() {
       .then((res) => {
         api.setToken(res.token);
         localStorage.setItem("jwt", res.token);
-        setToken(res.token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
