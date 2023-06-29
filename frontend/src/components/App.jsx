@@ -44,6 +44,7 @@ function App() {
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     setToken(jwt);
+    console.log(jwt);
   }, []);
 
   // получить контент
@@ -103,6 +104,7 @@ function App() {
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
+        console.log(token, email, "jwt")
       })
       .catch((err) => {
         console.log(`Ошибка в App, loginUser: ${err}`);
@@ -113,8 +115,8 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
       .then(([user, card]) => {
-        setCurrentUser(user.user);
-        setCards(card.data);
+        setCurrentUser(user);
+        setCards(card);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
