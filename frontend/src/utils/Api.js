@@ -104,11 +104,6 @@ class Api {
       return this.dislike(cardId);
     }
   }
-
-  // устанавливаю токен
-  // setToken(token) { 
-  //   this._headers.Authorization = `Bearer ${token}`; 
-  // } 
 }
 
 export const api = new Api({

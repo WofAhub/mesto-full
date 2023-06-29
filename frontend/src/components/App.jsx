@@ -41,6 +41,11 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
+  }, []);
+
   // получить контент
   React.useEffect(() => {
     if (!token) {
@@ -91,7 +96,8 @@ function App() {
 
   // логин
   function loginUser({ email, password }) {
-    auth.login(email, password)
+    auth
+      .login(email, password)
       .then((token) => {
         localStorage.setItem("jwt", token);
         setToken(token);
