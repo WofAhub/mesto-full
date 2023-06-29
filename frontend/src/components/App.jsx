@@ -41,8 +41,9 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  React.useEffect((token) => {
     const jwt = localStorage.getItem("jwt");
+    api.setToken(token);
     setToken(jwt);
   }, []);
 
@@ -108,10 +109,6 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
-
-  React.useEffect((token) => {
-    api.setToken(token);
-  })
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
