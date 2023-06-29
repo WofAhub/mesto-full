@@ -101,6 +101,7 @@ function App() {
       .then((token) => {
         localStorage.setItem("jwt", token);
         setToken(token);
+        api.setToken(token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
@@ -109,10 +110,6 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
-
-  React.useEffect((token) => {
-    api.setToken(token);
-  }, [token])
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
