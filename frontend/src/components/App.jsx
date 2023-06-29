@@ -56,6 +56,7 @@ function App() {
       .then((res) => {
         setUserData(res.data.email);
         setLoggedIn(true);
+        api.setToken(res.token)
         navigate('/', { replace: true });
       })
       .catch((err) => {
@@ -98,7 +99,6 @@ function App() {
   function loginUser({ email, password }) {
     auth.login(email, password)
       .then((token) => {
-        api.setToken(token);
         localStorage.setItem("jwt", token);
         setToken(token);
         setUserData(email);
