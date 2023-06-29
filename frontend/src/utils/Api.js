@@ -105,16 +105,15 @@ class Api {
     }
   }
 
-  // // устанавливаю токен
-  // setToken(token) { 
-  //   this._headers.Authorization = `Bearer ${token}`; 
-  // } 
+  // устанавливаю токен
+  setToken(token) { 
+    this._headers.Authorization = `Bearer ${token}`; 
+  } 
 }
 
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
-    "Authorization": '"Bearer" + token',
     'Content-Type': 'application/json',
   }
 })
