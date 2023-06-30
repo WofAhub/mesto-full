@@ -17,7 +17,7 @@ import { api } from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import * as auth from '../utils/auth.js';
 import ProtectedRoute from "./ProtectedRoute";
-import { dislikeCard } from "../../../backend/controllers/cards";
+// import { dislikeCard } from "../../../backend/controllers/cards";
 
 // function App
 function App() {
