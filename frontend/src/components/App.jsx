@@ -98,9 +98,9 @@ function App() {
   // логин
   function loginUser({ email, password }) {
     auth.login(email, password)
-      .then(({token}) => {
-        localStorage.setItem("jwt", token);
-        setToken(token);
+      .then((res) => {
+        const tokenLocalStorage = localStorage.setItem("jwt", res.token);
+        setToken(tokenLocalStorage);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
