@@ -1,6 +1,6 @@
 class Api {
   constructor(options) {
-    this._fetchUrl = options.fetchUrl;
+    this._fetchUrl = 'https://api.wofamesto.nomoreparties.sbs';
     this._headers = options.headers;
   }
 
@@ -16,9 +16,19 @@ class Api {
   // получаем карточки с сервера
   getInitialCards() {
     return fetch(`${this._fetchUrl}/cards`, {
+      method: "GET",
       headers: this._headers,
     })
     .then(this._getJson)
+  }
+
+  // получаем информацию о пользователе
+  getCurrentUser() {
+    return fetch (`${this._fetchUrl}/users/me`, {
+      method: "GET",
+      headers: this._headers
+    })
+    .then(this._getJson);
   }
 
   // создаем новые карточки на сервер
@@ -61,14 +71,6 @@ class Api {
     .then(this._getJson);
   }
 
-  // получаем информацию о пользователе
-  getCurrentUser() {
-    return fetch (`${this._fetchUrl}/users/me`, {
-      headers: this._headers
-    })
-    .then(this._getJson);
-  }
-
   // редактирование информации о пользователе через попап Профиля
   editUserInfo(data) {
     return fetch(`${this._fetchUrl}/users/me`, {
@@ -105,7 +107,6 @@ class Api {
 }
 
 export const api = new Api({
-  fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
     'Content-Type': 'application/json',
   }
