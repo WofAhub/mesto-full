@@ -1,3 +1,5 @@
+const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
+
 class Api {
   constructor(options) {
     this._fetchUrl = options.fetchUrl;
@@ -15,7 +17,7 @@ class Api {
 
   // получаем карточки с сервера
   getInitialCards() {
-    return fetch(`${this._fetchUrl}/cards`, {
+    return fetch(`${BASE_URL}/cards`, {
       method: "GET",
       headers: this._headers,
     })
@@ -64,7 +66,7 @@ class Api {
 
   // получаем информацию о пользователе
   getCurrentUser() {
-    return fetch (`${this._fetchUrl}/users/me`, {
+    return fetch (`${BASE_URL}/users/me`, {
       method: "GET",
       headers: this._headers
     })
