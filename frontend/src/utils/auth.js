@@ -33,8 +33,10 @@ export const login = (email, password) => {
         .then(res => checkAnswerFromServer(res))
         .then((data) => {
             if (data.token) {
+                console.log(data, "Это data из login в auth")
                 const token = data.token;
                 localStorage.setItem("token", token);
+                console.log(token, "Это токен из login в auth")
                 return token;
             }
         })
@@ -42,6 +44,7 @@ export const login = (email, password) => {
 };
 
 export const getContent = (token) => {
+    console.log(token, "Это токен из getContent в auth")
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
