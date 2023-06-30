@@ -1,5 +1,3 @@
-import { api } from "./Api";
-
 export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
 function checkAnswerFromServer(res) {
@@ -33,9 +31,12 @@ export const login = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
-        .then(() => {
-            const token = localStorage.getItem("jwt");
-            api.setToken(token);
+        .then((data) => {
+            if (data.token) {
+                const token = data.token;
+                localStorage.setItem("token", token);
+                return token;
+            }
         })
         .catch(err => console.log(err))
 };

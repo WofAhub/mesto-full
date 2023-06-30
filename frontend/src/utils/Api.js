@@ -17,7 +17,10 @@ class Api {
   getInitialCards() {
     return fetch(`${this._fetchUrl}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer" + localStorage.getItem("token")
+      }
     })
     .then(this._getJson)
   }
@@ -66,7 +69,10 @@ class Api {
   getCurrentUser() {
     return fetch (`${this._fetchUrl}/users/me`, {
       method: "GET",
-      headers: this._headers
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer" + localStorage.getItem("token")
+      }
     })
     .then(this._getJson);
   }

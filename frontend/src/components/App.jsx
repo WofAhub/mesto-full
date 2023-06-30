@@ -47,12 +47,11 @@ function App() {
     console.log(jwt);
   }, []);
 
-  // логин
+    // логин
   function loginUser({ email, password }) {
-    const jwt = localStorage.getItem("jwt");
     auth.login(email, password)
       .then((token) => {
-        localStorage.setItem("jwt", jwt);
+        localStorage.setItem("jwt", token);
         setToken(token);
         setUserData(email);
         setLoggedIn(true);
