@@ -7,6 +7,7 @@ class Api {
   // получаем json, если ответ пришел
   _getJson (res) {
     if (res.ok) {
+      console.log(res, "Это res из _getJson в api")
       return res.json();
     } else {
       return Promise.reject(`Ошибка: ${res.status}`);
@@ -19,8 +20,7 @@ class Api {
       method: "GET",
       headers: this._headers,
     })
-    .then(this._getJson)
-    .then(res => console.log(res, "Это res из getInitialCards в api"))
+    .then(this._getJson, console.log(this, "Это this из getInitialCards в api"))
     .catch(err => console.log(err, "Это err из getInitialCards в api")) 
   }
 
@@ -70,8 +70,7 @@ class Api {
       method: "GET",
       headers: this._headers
     })
-    .then(this._getJson)
-    .then(res => console.log(res, "Это res из getCurrentUser в api"))
+    .then(this._getJson, console.log(this, "Это this из getCurrentUser в api"))
     .catch(err => console.log(err, "Это err из getCurrentUser в api")) 
   }
 

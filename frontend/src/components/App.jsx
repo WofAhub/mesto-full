@@ -17,6 +17,7 @@ import { api } from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import * as auth from '../utils/auth.js';
 import ProtectedRoute from "./ProtectedRoute";
+import { dislikeCard } from "../../../backend/controllers/cards";
 
 // function App
 function App() {
@@ -118,6 +119,7 @@ function App() {
       .then(([user, card]) => {
         setCurrentUser(user);
         setCards(card);
+        console.log(user, card, "Это user и card из React.useEffect(() в App");
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
