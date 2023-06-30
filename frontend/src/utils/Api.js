@@ -1,8 +1,9 @@
-class Api {
+export default class Api {
   constructor(options) {
-    this._fetchUrl = options.fetchUrl;
-    this._headers = options.headers;
-  }
+    this._fetchUrl = options.baseUrl;
+    this._token = options.headers.authorization;
+    this._contentType = options.headers['Content-Type'];
+}
 
   // получаем json, если ответ пришел
   _getJson (res) {
@@ -15,7 +16,7 @@ class Api {
 
   // получаем карточки с сервера
   getInitialCards() {
-    return fetch(`${this._fetchUrl}/cards`, {
+    return fetch(this._fetchUrl + '/cards', {
       method: "GET",
       headers: this._headers,
     })
@@ -24,7 +25,7 @@ class Api {
 
   // создаем новые карточки на сервер
   createCardByPopup(data) {
-    return fetch (`${this._fetchUrl}/cards`, {
+    return fetch (this._fetchUrl + '/cards', {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
@@ -37,7 +38,7 @@ class Api {
 
   // удалить карточку
   deleteCard(id) {
-    return fetch(`${this._fetchUrl}/cards/${id}`, {
+    return fetch(this._fetchUrl + '/cards' + id, {
       method: "DELETE",
       headers: this._headers
     })
@@ -46,7 +47,7 @@ class Api {
 
   // поставить лайк
   like(id) {
-    return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
+    return fetch(this._fetchUrl + '/cards' + id + '/likes', {
       method: "PUT",
       headers: this._headers
     })
@@ -55,7 +56,7 @@ class Api {
 
   // убрать лайк
   dislike(id) {
-    return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
+    return fetch(this._fetchUrl + '/cards/' + id + '/likes', {
       method: "DELETE",
       headers: this._headers
     })
@@ -64,16 +65,18 @@ class Api {
 
   // получаем информацию о пользователе
   getCurrentUser() {
-    return fetch (`${this._fetchUrl}/users/me`, {
+    return fetch (this._fetchUrl + '/users/me', {
       method: "GET",
-      headers: this._headers
+      headers: {
+        authorization: this._token
+      }
     })
     .then(this._getJson);
   }
 
   // редактирование информации о пользователе через попап Профиля
   editUserInfo(data) {
-    return fetch(`${this._fetchUrl}/users/me`, {
+    return fetch(this._fetchUrl + '/users/me', {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -86,7 +89,7 @@ class Api {
 
   // редактирование аватара пользователя через попап Аватара
   editUserAvatar(data) {
-    return fetch(`${this._fetchUrl}/users/me/avatar`, {
+    return fetch(this._fetchUrl + '/users/me/avatar', {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -106,9 +109,9 @@ class Api {
   }
 }
 
-export const api = new Api({
-  fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
-  headers: {
-    'Content-Type': 'application/json',
-  }
-})
+// export const api = new Api({
+//   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   }
+// })

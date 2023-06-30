@@ -13,10 +13,11 @@ import InfoTooltip from "./InfoTooltip";
 // react and utils
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 import React from "react";
-import { api } from "../utils/Api";
+import Api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import * as auth from '../utils/auth.js';
 import ProtectedRoute from "./ProtectedRoute";
+import { BASE_URL } from '../utils/auth';
 
 // function App
 function App() {
@@ -33,52 +34,81 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [apiState, setApiState] = React.useState({});
 
   // const авторизация
   const [isloggedIn, setLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
+  // const [token, setToken] = React.useState('')
   const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
-    console.log(jwt, "Это token в React.useEffect(() 1, в App");
-  }, []);
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   setToken(jwt);
+  //   console.log(jwt, "Это token в React.useEffect(() 1, в App");
+  // }, []);
 
-  // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
-    if(isloggedIn) {
-      api.getInitialCards()
-      .then((res) => {
-        setCards(res);
-        console.log(res, 'Ресурсы из getInitialCards, App')
-      })
-      api.getCurrentUser()
-      .then((res) => {
-        setCurrentUser(res);
-        console.log(res, 'Ресурсы из getCurrentUser, App')
-      })
+    if (Object.keys(apiState).length > 0) {
+        Api.getCurrentUser()
+            .then(user => {
+                if (user) {
+                    setCurrentUser(user);
+                }
+            })
+            .catch(err => { console.log(err) });
     }
-  }, [isloggedIn])
+}, [apiState]);
+
+React.useEffect(() => {
+    if (Object.keys(apiState).length > 0) {
+        Api.getInitialCards()
+            .then(cards => {
+                setCards(cards.reverse());
+            })
+            .catch(err => { console.log(err) });
+    }
+}, [apiState]);
 
   // получить контент
+  // React.useEffect(() => {
+  //   if (!token) {
+  //     return;
+  //   }
+  //   auth
+  //     .getContent(token)
+  //     .then((res) => {
+  //       setUserData(res.data.email);
+  //       setLoggedIn(true);
+  //       navigate('/', { replace: true });
+  //     })
+  //     .catch((err) => {
+  //       console.log(`Ошибка в App, useEffect2: ${err}`);
+  //     })
+  // }, [navigate, token])
+
   React.useEffect(() => {
-    if (!token) {
-      return;
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+        auth.getContent(jwt)
+            .then(res => {
+                setLoggedIn(true);
+                setUserData(res.email);
+                setApiState(new Api({
+                    baseUrl: BASE_URL,
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                        'Content-Type': 'application/json'
+                    }
+                }));
+                navigate('/');
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
-    auth
-      .getContent(token)
-      .then((res) => {
-        setUserData(res.data.email);
-        setLoggedIn(true);
-        navigate('/', { replace: true });
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, useEffect2: ${err}`);
-      })
-  }, [navigate, token])
+}, [navigate]);
 
   // регистрация
   function registerUser({ email, password }) {
@@ -114,13 +144,18 @@ function App() {
   // логин
   function loginUser({ email, password }) {
     auth.login(email, password)
-      .then((token) => {
-        localStorage.setItem("jwt", token.token);
-        setToken(token.token)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
-        console.log(token.token, "Это token в React.useEffect(() 3, в App");
+        setApiState(new Api({
+          fetchUrl: BASE_URL,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            'Content-Type': 'application/json'
+          }
+        }))
       })
       .catch((err) => {
         console.log(`Ошибка в App, loginUser: ${err}`);
@@ -131,7 +166,7 @@ function App() {
   function logOutUser() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
-    setToken("");
+    setApiState({});
     setUserData("");
     navigate('/sign-in', { replace: true });
   }
@@ -181,7 +216,7 @@ function App() {
 
   // запрос обновления информации юзера
   function handleUpdateUser(data) {
-    api
+    Api
       .editUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
@@ -194,7 +229,7 @@ function App() {
 
   // запрос обновления аватара
   function handleUpdateAvatar(data) {
-    api
+    Api
       .editUserAvatar(data)
       .then((res) => {
         setCurrentUser(res);
@@ -207,7 +242,7 @@ function App() {
 
   // запрос добавления карточки
   function handleAddPlace(data) {
-    api
+    Api
       .createCardByPopup(data)
       .then((newCard) => {
         setCards([newCard, ...cards]);
@@ -222,7 +257,7 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api
+    Api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
@@ -236,7 +271,7 @@ function App() {
 
   // запрос удаления карточки
   function handleCardDelete(card) {
-    api
+    Api
       .deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== card._id));
