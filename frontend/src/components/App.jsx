@@ -42,62 +42,17 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if(isloggedIn === true) {
-      navigate('/');
-    }
-  }, [isloggedIn, navigate]);
-
-  React.useEffec(() => {
-    if(isloggedIn === false) {
-      return;
-    }
-    api
-      .getCurrentUser()
-      .then((res) => {
-        setCurrentUser(res)
-      })
-      .catch((err) => {
-        console.log("Ошибка во втором React.useEffect, api.getCurrentUser()", err);
-      })
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res)
-      })
-      .catch((err) => {
-        console.log("Ошибка во втором React.useEffect, api.getInitialCards()", err);
-      })
-  }, [isloggedIn]);
-
-  // получить контент
-  React.useEffect(() => {
-    if (localStorage.getItem("jwt")) {
-      const token = localStorage.getItem("jwt");
-      auth.getContent(token)
-			.then((res) => {
-				const data = res.data;
-				setUserData(data.email);
-				setLoggedIn(true);
-				navigate('/');
-			})
-			.catch((err) => {
-				console.log("Ошибка в третьем React.useEffect", err);
-			})
-    }
-  },[navigate]);
-
-  React.useEffect(() => {
-		if (!token) {
-			return;
-		}
-	}, [token]);
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
+    console.log(jwt);
+  }, []);
 
   // логин
   function loginUser({ email, password }) {
-    auth
-      .login(email, password)
-      .then(({token}) => {
-        localStorage.setItem("jwt", token);
+    const jwt = localStorage.getItem("jwt");
+    auth.login(email, password)
+      .then((token) => {
+        localStorage.setItem("jwt", jwt);
         setToken(token);
         setUserData(email);
         setLoggedIn(true);
@@ -107,6 +62,23 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
+
+  // получить контент
+  React.useEffect(() => {
+    if (!token) {
+      return;
+    }
+    auth
+      .getContent(token)
+      .then((res) => {
+        setUserData(res.data.email);
+        setLoggedIn(true);
+        navigate('/', { replace: true });
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, useEffect2: ${err}`);
+      })
+  }, [navigate, token])
 
   // регистрация
   function registerUser({ email, password }) {
@@ -154,8 +126,8 @@ function App() {
   // разлогин
   function logOutUser() {
     localStorage.removeItem("jwt");
-    setToken("");
     setLoggedIn(false);
+    setToken("");
     setUserData("");
     navigate('/sign-in', { replace: true });
   }

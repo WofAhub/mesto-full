@@ -31,6 +31,7 @@ export const login = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
+        .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {
