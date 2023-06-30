@@ -1,3 +1,4 @@
+import { api } from '../utils/Api';
 export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
 function checkAnswerFromServer(res) {
@@ -36,11 +37,7 @@ export const login = (email, password) => {
 export const getContent = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
+        headers: api.setToken(token),
     })
         .then(res => checkAnswerFromServer(res))
        

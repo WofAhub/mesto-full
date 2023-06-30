@@ -104,6 +104,12 @@ class Api {
       return this.dislike(cardId);
     }
   }
+
+  // устанавливаю токен
+  setToken(token) { 
+    this._headers.Authorization = `Bearer ${token}`;
+    console.log(token, "Это токен в setToken, в api")
+  }
 }
 
 export const api = new Api({
@@ -113,3 +119,5 @@ export const api = new Api({
     'Content-Type': 'application/json',
   }
 })
+
+console.log(api, "Это новый экземпляр api");
