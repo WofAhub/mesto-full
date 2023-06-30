@@ -110,10 +110,10 @@ function App() {
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
+    Promise.all(api.getCurrentUser(), api.getInitialCards())
+      .then((user, card) => {
         setCurrentUser(user.data);
-        setCards(card);
+        setCards(card.data);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);

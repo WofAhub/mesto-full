@@ -1,6 +1,6 @@
 class Api {
   constructor(options) {
-    this._fetchUrl = 'https://api.wofamesto.nomoreparties.sbs';
+    this._fetchUrl = options.fetchUrl;
     this._headers = options.headers;
   }
 
@@ -21,7 +21,7 @@ class Api {
     })
     .then(this._getJson)
   }
-
+  
   // получаем информацию о пользователе
   getCurrentUser() {
     return fetch (`${this._fetchUrl}/users/me`, {
@@ -107,6 +107,7 @@ class Api {
 }
 
 export const api = new Api({
+  fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
     'Content-Type': 'application/json',
   }
