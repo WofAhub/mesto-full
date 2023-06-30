@@ -154,9 +154,9 @@ function App() {
   // }
 
   // нажатие по карточке
-  function handleCardClick(card) {
-    setSelectedCard(card);
-  }
+  // function handleCardClick(card) {
+  //   setSelectedCard(card);
+  // }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function closeAllPopups() {
@@ -285,7 +285,7 @@ function App() {
                     // onEditAvatar={handleEditAvatarClick}
                     // onEditProfile={handleEditProfileClick}
                     // onAddPlace={handleAddPlaceClick}
-                    onCardClick={handleCardClick}
+                    // onCardClick={handleCardClick}
                     // onCardLike={handleCardLike}
                     // onCardDelete={handleCardDelete}
                     logOut={logOutUser}
