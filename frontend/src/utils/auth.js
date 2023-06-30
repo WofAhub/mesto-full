@@ -37,7 +37,11 @@ export const login = (email, password) => {
 export const getContent = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
-        headers: api.setToken(token),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": api.setToken(token),
+        },
     })
         .then(res => checkAnswerFromServer(res))
        
