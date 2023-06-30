@@ -36,16 +36,17 @@ function App() {
 
   // const авторизация
   const [isloggedIn, setLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
+  // const [token, setToken] = React.useState('')
   const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
-    console.log(jwt);
-  }, []);
+    api.setToken(token);
+    console.log(token);
+  }, [token]);
 
   // получить контент
   React.useEffect(() => {
@@ -99,8 +100,8 @@ function App() {
   function loginUser({ email, password }) {
     auth.login(email, password)
       .then((res) => {
-        const tokenLocalStorage = localStorage.setItem("jwt", res.token);
-        setToken(tokenLocalStorage);
+        localStorage.setItem("jwt", res.token);
+        api.setToken(token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
@@ -126,7 +127,7 @@ function App() {
   function logOutUser() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
-    setToken("");
+    api.setToken("");
     setUserData("");
     navigate('/sign-in', { replace: true });
   }

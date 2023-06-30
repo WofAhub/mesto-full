@@ -1,5 +1,3 @@
-const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
-
 class Api {
   constructor(options) {
     this._fetchUrl = options.fetchUrl;
@@ -17,7 +15,7 @@ class Api {
 
   // получаем карточки с сервера
   getInitialCards() {
-    return fetch(`${BASE_URL}/cards`, {
+    return fetch(`${this._fetchUrl}/cards`, {
       method: "GET",
       headers: this._headers,
     })
@@ -66,7 +64,7 @@ class Api {
 
   // получаем информацию о пользователе
   getCurrentUser() {
-    return fetch (`${BASE_URL}/users/me`, {
+    return fetch (`${this._fetchUrl}/users/me`, {
       method: "GET",
       headers: this._headers
     })
@@ -106,6 +104,11 @@ class Api {
       return this.dislike(cardId);
     }
   }
+
+  // устанавливаю токен
+  setToken(token) { 
+    this._headers.Authorization = `Bearer ${token}`; 
+  } 
 }
 
 export const api = new Api({
