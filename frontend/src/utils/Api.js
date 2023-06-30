@@ -16,7 +16,6 @@ class Api {
   // получаем карточки с сервера
   getInitialCards() {
     return fetch(`${this._fetchUrl}/cards`, {
-      method: "GET",
       headers: this._headers,
     })
     .then(this._getJson)
@@ -65,7 +64,6 @@ class Api {
   // получаем информацию о пользователе
   getCurrentUser() {
     return fetch (`${this._fetchUrl}/users/me`, {
-      method: "GET",
       headers: this._headers
     })
     .then(this._getJson);
@@ -104,11 +102,6 @@ class Api {
       return this.dislike(cardId);
     }
   }
-
-  // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`; 
-  } 
 }
 
 export const api = new Api({
