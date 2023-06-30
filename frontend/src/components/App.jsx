@@ -112,7 +112,7 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
       .then(([user, card]) => {
-        setCurrentUser(user);
+        setCurrentUser(user.data);
         setCards(card);
       })
       .catch((err) => {
