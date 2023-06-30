@@ -47,6 +47,19 @@ function App() {
     console.log(jwt, "Это token в React.useEffect(() 1, в App");
   }, []);
 
+  // запрос на текущие данные о пользователе и получение карточек
+  React.useEffect(() => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
+        setCurrentUser(user);
+        setCards(card);
+        console.log(user, cards, "Это user, cards, в React.useEffect(() 4, в App");
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, [cards]);
+
   // получить контент
   React.useEffect(() => {
     if (!token) {
@@ -110,19 +123,6 @@ function App() {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
-
-   // запрос на текущие данные о пользователе и получение карточек
-  React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
-        console.log(user, cards, "Это user, cards, в React.useEffect(() 4, в App");
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
-  }, [cards]);
 
   // разлогин
   function logOutUser() {
