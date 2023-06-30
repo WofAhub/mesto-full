@@ -49,16 +49,19 @@ function App() {
 
   // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
-        console.log(user, cards, "Это user, cards, в React.useEffect(() 4, в App");
+    if(isloggedIn) {
+      api.getInitialCards()
+      .then((res) => {
+        setCards(res);
+        console.log(res, 'Ресурсы из getInitialCards, App')
       })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
-  }, [cards]);
+      api.getCurrentUser()
+      .then((res) => {
+        setCurrentUser(res);
+        console.log(res, 'Ресурсы из getCurrentUser, App')
+      })
+    }
+  }, [isloggedIn])
 
   // получить контент
   React.useEffect(() => {
