@@ -19,7 +19,7 @@ class Api {
       method: "GET",
       headers: this._headers,
     })
-    .then(this._getJson, console.log(this._fetchUrl, this._headers, "Это this._fetchUrl, this._headers в getInitialCards, в Api" ))
+    .then(this._getJson)
   }
 
   // создаем новые карточки на сервер
@@ -68,7 +68,7 @@ class Api {
       method: "GET",
       headers: this._headers
     })
-    .then(this._getJson, console.log(this._fetchUrl, this._headers, "Это this._fetchUrl, this._headers в getCurrentUser, в Api" ));
+    .then(this._getJson);
   }
 
   // редактирование информации о пользователе через попап Профиля
@@ -104,12 +104,6 @@ class Api {
       return this.dislike(cardId);
     }
   }
-
-  // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`;
-    console.log(token, "Это token в getCurrentUser, в Api");
-  } 
 }
 
 export const api = new Api({

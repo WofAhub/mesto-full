@@ -99,8 +99,8 @@ function App() {
   function loginUser({ email, password }) {
     auth.login(email, password)
       .then((token) => {
-        localStorage.setItem("jwt", token);
-        api.setToken(token.token);
+        localStorage.setItem("jwt", token.token);
+        setToken(token.token)
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
@@ -114,7 +114,6 @@ function App() {
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
-    console.log(api.getCurrentUser(), api.getInitialCards(), "Это api.getCurrentUser(), api.getInitialCards() в React.useEffect(() 4, в App")
       .then(([user, card]) => {
         setCurrentUser(user);
         setCards(card);
@@ -123,7 +122,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
       });
-  }, []);
+  }, [cards]);
 
   // разлогин
   function logOutUser() {
