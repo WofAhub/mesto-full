@@ -8,7 +8,7 @@ const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 // const миддлвары
-const auth = require('./middlewares/auth');
+// const auth = require('./middlewares/auth');
 const limiter = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/errorHandler');
 const cors = require('./middlewares/cors');
@@ -46,7 +46,7 @@ app.get('/crash-test', () => {
 app.use(authAndRegisterRouter);
 
 // app.use роуты
-app.use(auth);
+// app.use(auth);
 app.use(userRouter);
 app.use(cardsRouter);
 app.use(error404);
