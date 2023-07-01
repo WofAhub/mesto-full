@@ -121,7 +121,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
       });
-  }, [token]);
+  }, []);
 
   // разлогин
   function logOutUser() {

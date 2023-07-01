@@ -7,6 +7,7 @@ class Api {
   // устанавливаю токен
   setToken(token) {
     this._headers.Authorization = `Bearer ${token}`;
+    console.log(token, 'Токен из api, setToken');
   }
 
   // получаем json, если ответ пришел
