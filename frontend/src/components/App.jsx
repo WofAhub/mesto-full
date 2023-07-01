@@ -55,8 +55,9 @@ function App() {
     auth
       .getContent(token)
       .then((res) => {
-        setUserData(res.email);
+        setUserData(res.data.email);
         setLoggedIn(true);
+        setToken(token);
         navigate('/', { replace: true });
       })
       .catch((err) => {
@@ -113,10 +114,10 @@ function App() {
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([res]) => {
-        setCurrentUser(res.user);
-        setCards(res.card);
+    Promise.all(api.getCurrentUser(), api.getInitialCards())
+      .then(({user, card}) => {
+        setCurrentUser(user);
+        setCards(card);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
