@@ -42,8 +42,8 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
+    const token = localStorage.getItem("token");
+    setToken(token);
   }, []);
 
   // получить контент
