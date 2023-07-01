@@ -102,6 +102,7 @@ function App() {
       .then((token) => {
         localStorage.setItem("jwt", token);
         setToken(token);
+        api.setToken(token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
@@ -115,14 +116,13 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
       .then(([user, card]) => {
-        api.setToken(token);
         setCurrentUser(user);
         setCards(card);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
       });
-  }, []);
+  }, [token]);
 
   // разлогин
   function logOutUser() {

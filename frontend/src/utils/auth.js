@@ -38,7 +38,6 @@ export const login = (email, password) => {
                 return token;
             }
         })
-        .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {
