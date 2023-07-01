@@ -1,5 +1,6 @@
 export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
+// проверка ответа с сервера
 function checkAnswerFromServer(res) {
     if (res.ok) {
         return res.json();
@@ -8,6 +9,7 @@ function checkAnswerFromServer(res) {
     }
 }
 
+// регистрация
 export const register = (email, password) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
@@ -18,9 +20,15 @@ export const register = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
+        .then((res) => {
+            return res;
+        })
+        .catch((err) => {
+            console.log(`Ошибка в register, auth: ${err}`)
+        })
 }
 
-
+// логин
 export const login = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
@@ -32,15 +40,13 @@ export const login = (email, password) => {
     })
         .then(res => checkAnswerFromServer(res))
         .then((data) => {
-            if (data.token) {
-                const token = data.token;
-                localStorage.setItem("token", token);
-                return token;
-            }
+            localStorage.setItem('jwt', data.jwt);
+            return data;
         })
 };
 
-export const getContent = (token) => {
+// проверка токена
+export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -50,5 +56,5 @@ export const getContent = (token) => {
         },
     })
         .then(res => checkAnswerFromServer(res))
-       
+        .then(data => data)
 };

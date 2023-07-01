@@ -43,29 +43,35 @@ function App() {
   // const навигация
   const navigate = useNavigate();
 
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   setToken(jwt);
+  //   console.log(jwt);
+  // }, []);
+  
+  // проверка токена эффект
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
-    console.log(jwt);
-  }, []);
+    checkToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  // получить контент
-  React.useEffect(() => {
-    if (!token) {
-      return;
-    }
-    auth
-      .getContent(token)
-      .then((res) => {
-        setUserData(res.data.email);
+  // проверка токена
+  const checkToken = () => {
+    if(localStorage.getItem('jwt')) {
+    const jwt = localStorage.getItem('jwt');
+    auth.checkToken(jwt).then((res) => {
+      if (res) {
+        const userData = {
+          email: res.email,
+        }
         setLoggedIn(true);
-        navigate('/', { replace: true });
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, useEffect2: ${err}`);
-      })
-  }, [navigate, token])
-
+        setUserData(userData);
+        navigate('/', {replace: true});
+      }
+    });
+    }
+  }
+    
   // регистрация
   function registerUser({ email, password }) {
     auth

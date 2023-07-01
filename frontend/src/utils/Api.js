@@ -25,7 +25,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
     .then(this._getJson)
@@ -38,7 +38,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         name: data.name,
@@ -55,7 +55,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
     })
     .then(this._getJson);
@@ -68,7 +68,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
     })
     .then(this._getJson);
@@ -81,7 +81,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
     })
     .then(this._getJson);
@@ -94,7 +94,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
     },
     })
     .then(this._getJson);
@@ -107,7 +107,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         name: data.name,
@@ -124,7 +124,7 @@ class Api {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
+        authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
         avatar: data.avatar,
@@ -140,10 +140,6 @@ class Api {
     } else {
       return this.dislike(cardId);
     }
-  }
-
-  getData() {
-    return Promise.all([this.getInitialCards(), this.getUserInfo()])
   }
 }
 
