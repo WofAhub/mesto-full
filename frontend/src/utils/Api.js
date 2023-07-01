@@ -108,7 +108,7 @@ class Api {
   // устанавливаю токен
   setToken(token) { 
     this._headers.Authorization = `Bearer ${token}`;
-    console.log(token, "Это токен в setToken, в api")
+    console.log(token, "Это токен в setToken, api")
   }
 }
 
@@ -118,6 +118,4 @@ export const api = new Api({
     Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   }
-})
-
-console.log(api, "Это новый экземпляр api");
+});
