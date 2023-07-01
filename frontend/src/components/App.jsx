@@ -57,7 +57,6 @@ function App() {
       .then((res) => {
         setUserData(res.data.email);
         setLoggedIn(true);
-        setToken(token);
         navigate('/', { replace: true });
       })
       .catch((err) => {
@@ -102,7 +101,6 @@ function App() {
       .login(email, password)
       .then((token) => {
         localStorage.setItem("jwt", token);
-        setToken(token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
