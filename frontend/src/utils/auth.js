@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
+import { api } from '../utils/Api';
+export const BASE_URL = 'https://auth.nomoreparties.co';
 
 function checkAnswerFromServer(res) {
     if (res.ok) {
@@ -13,7 +14,7 @@ export const register = (email, password) => {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
     })
@@ -31,6 +32,14 @@ export const login = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
+        .then((data) => {
+            if (data.token) {
+                const token = data.token;
+                api.setToken(token);
+                return token;
+            }
+        })
+        .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {
@@ -38,7 +47,7 @@ export const getContent = (token) => {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
     })

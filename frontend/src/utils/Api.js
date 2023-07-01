@@ -4,6 +4,11 @@ class Api {
     this._headers = options.headers;
   }
 
+  // устанавливаю токен
+  setToken(token) {
+    this._headers.Authorization = `Bearer ${token}`;
+  }
+
   // получаем json, если ответ пришел
   _getJson (res) {
     if (res.ok) {
@@ -20,15 +25,6 @@ class Api {
       headers: this._headers,
     })
     .then(this._getJson)
-  }
-  
-  // получаем информацию о пользователе
-  getCurrentUser() {
-    return fetch (`${this._fetchUrl}/users/me`, {
-      method: "GET",
-      headers: this._headers
-    })
-    .then(this._getJson);
   }
 
   // создаем новые карточки на сервер
@@ -66,6 +62,15 @@ class Api {
   dislike(id) {
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "DELETE",
+      headers: this._headers
+    })
+    .then(this._getJson);
+  }
+
+  // получаем информацию о пользователе
+  getCurrentUser() {
+    return fetch (`${this._fetchUrl}/users/me`, {
+      method: "GET",
       headers: this._headers
     })
     .then(this._getJson);
@@ -109,7 +114,7 @@ class Api {
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    "Authorization": `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   }
 })
