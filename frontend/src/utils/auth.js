@@ -31,14 +31,6 @@ export const login = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
-        .then((data) => {
-            if (data.token) {
-                const token = data.token;
-                localStorage.setItem("token", token);
-                return token;
-            }
-        })
-        .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {

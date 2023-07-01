@@ -6,8 +6,7 @@ class Api {
 
   // устанавливаю токен
   setToken(token) {
-    this._headers.Authorization = `Bearer ${token}`;
-    console.log(token, 'Токен из api, setToken');
+    this._headers.authorization = `Bearer ${token}`;
   }
 
   // получаем json, если ответ пришел
@@ -115,6 +114,7 @@ class Api {
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 })
