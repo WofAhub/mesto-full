@@ -40,7 +40,7 @@ export const getContent = (token) => {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            "Authorization": api.setToken(token),
+            Authorization: api.setToken(token),
         },
     })
         .then(res => checkAnswerFromServer(res))

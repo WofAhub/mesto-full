@@ -4,6 +4,11 @@ class Api {
     this._headers = options.headers;
   }
 
+  // устанавливаю токен
+  setToken(token) { 
+    this._headers.Authorization = `Bearer ${token}`; 
+  } 
+
   // получаем json, если ответ пришел
   _getJson (res) {
     if (res.ok) {
@@ -104,12 +109,6 @@ class Api {
       return this.dislike(cardId);
     }
   }
-
-  // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`;
-    console.log(token, "Это токен в setToken, api")
-  }
 }
 
 export const api = new Api({
@@ -118,4 +117,6 @@ export const api = new Api({
     Authorization: `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json',
   }
-});
+})
+
+console.log(api, "Это новый экземпляр api");
