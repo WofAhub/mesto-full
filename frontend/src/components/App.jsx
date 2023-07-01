@@ -41,11 +41,11 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
-    console.log(jwt);
-  }, []);
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   setToken(jwt);
+  //   console.log(jwt);
+  // }, []);
 
   // получить контент
   React.useEffect(() => {

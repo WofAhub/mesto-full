@@ -121,3 +121,4 @@ export const api = new Api({
 })
 
 console.log(api, "Это новый экземпляр api");
+console.log(api.setToken(), "Это setToken api");
