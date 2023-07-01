@@ -32,14 +32,6 @@ export const login = (email, password) => {
         body: JSON.stringify({ email, password })
     })
         .then(res => checkAnswerFromServer(res))
-        .then((data) => {
-            if (data.token) {
-                const token = data.token;
-                api.setToken(token);
-                return token;
-            }
-        })
-        .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {
@@ -48,7 +40,7 @@ export const getContent = (token) => {
         headers: {
             'Accept': 'application/json',
             "Content-Type": "application/json",
-            "Authorization": api.setToken(token)
+            Authorization: api.setToken(token)
         },
     })
         .then(res => checkAnswerFromServer(res))
