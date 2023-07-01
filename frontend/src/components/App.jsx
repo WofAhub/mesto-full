@@ -111,46 +111,18 @@ function App() {
       });
   }
 
-  
-  React.useEffect(() => {
-    if(isloggedIn === true) {
-    api.setToken(token);
-    api
-      .getCurrentUser()
-      .then((res) => {
-        setCurrentUser(res.data.user)
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, getCurrentUser: ${err}`);
-      });
-}}, [isloggedIn, token])
-
-  React.useEffect(() => {
-    if(isloggedIn === true){
-    api.setToken(token);
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCurrentUser(res.data.card)
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, getInitialCards: ${err}`);
-      });
-}}, [isloggedIn, token])
-
-
    // запрос на текущие данные о пользователе и получение карточек
-  // React.useEffect(() => {
-  //   api.setToken(token);
-  //   Promise.all([api.getCurrentUser(), api.getInitialCards()])
-  //     .then(([user, card]) => {
-  //       setCurrentUser(user);
-  //       setCards(card);
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-  //     });
-  // }, [token]);
+  React.useEffect(() => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
+        api.setToken(token);
+        setCurrentUser(user);
+        setCards(card);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, []);
 
   // разлогин
   function logOutUser() {
