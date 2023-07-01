@@ -115,7 +115,7 @@ class Api {
 export const api = new Api({
   fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${localStorage.jwt}`,
     'Content-Type': 'application/json'
   }
 })
