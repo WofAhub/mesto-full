@@ -114,8 +114,8 @@ function App() {
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
-    Promise.all(api.getCurrentUser(), api.getInitialCards())
-      .then(({user, card}) => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
         setCurrentUser(user);
         setCards(card);
       })
