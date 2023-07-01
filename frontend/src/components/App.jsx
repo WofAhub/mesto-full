@@ -111,7 +111,9 @@ function App() {
       });
   }
 
+  
   React.useEffect(() => {
+    if(isloggedIn === true) {
     api.setToken(token);
     api
       .getCurrentUser()
@@ -121,9 +123,10 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, getCurrentUser: ${err}`);
       });
-  }, [token])
+}}, [isloggedIn, token])
 
   React.useEffect(() => {
+    if(isloggedIn === true){
     api.setToken(token);
     api
       .getInitialCards()
@@ -133,7 +136,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, getInitialCards: ${err}`);
       });
-  }, [token])
+}}, [isloggedIn, token])
 
 
    // запрос на текущие данные о пользователе и получение карточек
