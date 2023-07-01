@@ -101,7 +101,7 @@ function App() {
       .login(email, password)
       .then((token) => {
         localStorage.setItem("jwt", token);
-        api.setToken(token);
+        setToken(token);
         setUserData(email);
         setLoggedIn(true);
         navigate('/', { replace: true });
@@ -127,7 +127,7 @@ function App() {
   function logOutUser() {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
-    api.setToken("");
+    setToken("");
     setUserData("");
     navigate('/sign-in', { replace: true });
   }
