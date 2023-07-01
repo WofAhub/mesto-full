@@ -111,18 +111,43 @@ function App() {
       });
   }
 
-   // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     api.setToken(token);
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
+    api
+      .getCurrentUser()
+      .then((res) => {
+        setCurrentUser(res.data.user)
       })
       .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+        console.log(`Ошибка в App, React.useEffect, getCurrentUser: ${err}`);
       });
-  }, [token]);
+  }, [token])
+
+  React.useEffect(() => {
+    api.setToken(token);
+    api
+      .getInitialCards()
+      .then((res) => {
+        setCurrentUser(res.data.card)
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, getInitialCards: ${err}`);
+      });
+  }, [token])
+
+
+   // запрос на текущие данные о пользователе и получение карточек
+  // React.useEffect(() => {
+  //   api.setToken(token);
+  //   Promise.all([api.getCurrentUser(), api.getInitialCards()])
+  //     .then(([user, card]) => {
+  //       setCurrentUser(user);
+  //       setCards(card);
+  //     })
+  //     .catch((err) => {
+  //       console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+  //     });
+  // }, [token]);
 
   // разлогин
   function logOutUser() {
