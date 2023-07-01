@@ -113,6 +113,7 @@ function App() {
 
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
+    api.setToken(token);
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
       .then(([user, card]) => {
         setCurrentUser(user);
@@ -121,7 +122,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
       });
-  }, []);
+  }, [token]);
 
   // разлогин
   function logOutUser() {
