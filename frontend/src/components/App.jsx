@@ -39,52 +39,46 @@ function App() {
   const [token, setToken] = React.useState('')
   const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
+
+  // const навигация
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
+    console.log(jwt);
+  }, []);
 
   // получить контент
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    api.getCurrentUser(jwt)
-      .then((res) => {
-        setCurrentUser(res);
-        setLoggedIn(true);
-      })
-      .catch((error) => console.log(error));
-
-    api.getInitialCards(jwt)
-      .then((res) => {
-        setCards(res)
-      })
-      .catch((error) => console.log(error))
-  }, [])
-
-  // проверка токена
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
-      auth.getContent(jwt)
-        .then(res => {
-          setUserData(res.email);
-          setLoggedIn(true);
-          navigate('/', { replace: true });
-        })
-        .catch(err => console.log(err))
+    if (!token) {
+      return;
     }
-  }, [navigate])
+    auth
+      .getContent(token)
+      .then((res) => {
+        setUserData(res.data.email);
+        setLoggedIn(true);
+        navigate('/', { replace: true });
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, useEffect2: ${err}`);
+      })
+  }, [navigate, token])
 
   // регистрация
   function registerUser({ email, password }) {
     auth
       .register(email, password)
       .then((res) => {
-        return res;
-      })
-      .then(() => {
+        if(res) {
         setIsSuccess(true);
         navigate('/sign-in', { replace: true });
+        } else {
+          setIsSuccess(false);
+        }
       })
       .catch((err) => {
-        setIsSuccess(false);
         console.log(`Ошибка в App, registerUser: ${err}`);
       });
   }
@@ -107,19 +101,29 @@ function App() {
   function loginUser({ email, password }) {
     auth
       .login(email, password)
-      .then((res) => {
-        if(res.token) {
-          localStorage.setItem("jwt", res.token);
-          setToken(token);
-          setUserData(email);
-          setLoggedIn(true);
-          navigate('/', { replace: true });
-        }
+      .then((token) => {
+        localStorage.setItem("jwt", token);
+        setToken(token);
+        setUserData(email);
+        setLoggedIn(true);
+        navigate('/', { replace: true });
       })
       .catch((err) => {
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
+
+   // запрос на текущие данные о пользователе и получение карточек
+  React.useEffect(() => {
+    Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then(([user, card]) => {
+        setCurrentUser(user);
+        setCards(card);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, []);
 
   // разлогин
   function logOutUser() {

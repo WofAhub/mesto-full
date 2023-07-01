@@ -1,14 +1,13 @@
 class Api {
   constructor(options) {
     this._fetchUrl = options.fetchUrl;
-    this._headers = options.headers;
   }
 
   // устанавливаю токен
-  setToken(token) {
-    this._headers.Authorization = `Bearer ${token}`;
-    console.log(token, 'Токен из api, setToken');
-  }
+  // setToken(token) {
+  //   this._headers.Authorization = `Bearer ${token}`;
+  //   console.log(token, 'Токен из api, setToken');
+  // }
 
   // получаем json, если ответ пришел
   _getJson (res) {
@@ -20,19 +19,27 @@ class Api {
   }
 
   // получаем карточки с сервера
-  getInitialCards() {
+  getInitialCards(token) {
     return fetch(`${this._fetchUrl}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
     .then(this._getJson)
   }
 
   // создаем новые карточки на сервер
-  createCardByPopup(data) {
+  createCardByPopup(data, token) {
     return fetch (`${this._fetchUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -42,46 +49,66 @@ class Api {
   }
 
   // удалить карточку
-  deleteCard(id) {
+  deleteCard(id, token) {
     return fetch(`${this._fetchUrl}/cards/${id}`, {
       method: "DELETE",
-      headers: this._headers
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
     })
     .then(this._getJson);
   }
 
   // поставить лайк
-  like(id) {
+  like(id, token) {
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "PUT",
-      headers: this._headers
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
     })
     .then(this._getJson);
   }
 
   // убрать лайк
-  dislike(id) {
+  dislike(id, token) {
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "DELETE",
-      headers: this._headers
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
     })
     .then(this._getJson);
   }
 
   // получаем информацию о пользователе
-  getCurrentUser() {
+  getCurrentUser(token) {
     return fetch (`${this._fetchUrl}/users/me`, {
       method: "GET",
-      headers: this._headers
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+    },
     })
     .then(this._getJson);
   }
 
   // редактирование информации о пользователе через попап Профиля
-  editUserInfo(data) {
+  editUserInfo(data, token) {
     return fetch(`${this._fetchUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -91,10 +118,14 @@ class Api {
   }
 
   // редактирование аватара пользователя через попап Аватара
-  editUserAvatar(data) {
+  editUserAvatar(data, token) {
     return fetch(`${this._fetchUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -110,12 +141,12 @@ class Api {
       return this.dislike(cardId);
     }
   }
+
+  getData() {
+    return Promise.all([this.getInitialCards(), this.getUserInfo()])
+  }
 }
 
 export const api = new Api({
-  fetchUrl: 'https://api.wofamesto.nomoreparties.sbs',
-  headers: {
-    Authorization: `Bearer ${localStorage.jwt}`,
-    'Content-Type': 'application/json'
-  }
+  fetchUrl: 'https://api.wofamesto.nomoreparties.sbs'
 })
