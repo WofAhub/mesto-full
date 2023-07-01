@@ -1,4 +1,3 @@
-import { api } from '../utils/Api';
 export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
 function checkAnswerFromServer(res) {
@@ -40,7 +39,7 @@ export const getContent = (token) => {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            Authorization: api.setToken(token),
+            "Authorization": `Bearer ${token}`
         },
     })
         .then(res => checkAnswerFromServer(res))
