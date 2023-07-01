@@ -41,11 +41,11 @@ function App() {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
 
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   setToken(jwt);
-  //   console.log(jwt);
-  // }, []);
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    setToken(jwt);
+    console.log(jwt);
+  }, []);
 
   // получить контент
   React.useEffect(() => {
@@ -55,7 +55,7 @@ function App() {
     auth
       .getContent(token)
       .then((res) => {
-        setUserData(res.data.email);
+        setUserData(res.email);
         setLoggedIn(true);
         navigate('/', { replace: true });
       })
@@ -114,9 +114,9 @@ function App() {
    // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
+      .then(([res]) => {
+        setCurrentUser(res.user);
+        setCards(res.card);
       })
       .catch((err) => {
         console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
