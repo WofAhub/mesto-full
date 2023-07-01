@@ -119,5 +119,3 @@ export const api = new Api({
     'Content-Type': 'application/json',
   }
 })
-
-console.log(api, "Это новый экземпляр api");
