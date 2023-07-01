@@ -4,11 +4,6 @@ class Api {
     this._headers = options.headers;
   }
 
-  // устанавливаю токен
-  setToken(token) { 
-    this._headers.Authorization = `Bearer ${token}`; 
-  } 
-
   // получаем json, если ответ пришел
   _getJson (res) {
     if (res.ok) {
