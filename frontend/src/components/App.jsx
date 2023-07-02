@@ -60,6 +60,7 @@ function App() {
   //эффект зависит от регистрации, а точнее от токена в нем
   React.useEffect(() => {
     if(!token) {
+      setLoading(false);
       return;
     }
     auth
@@ -67,6 +68,7 @@ function App() {
       .then((user) => {
         setUserData(user);
         setLoggedIn(true);
+        navigate('/');
       })
       .catch((err) => {
         console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
@@ -90,9 +92,6 @@ function App() {
       .catch((err) => {
         setIsSuccess(false);
         console.log(`Ошибка в регистрации, в App: ${err}`)
-      })
-      .finally(() => {
-        setLoading(false);
       })
   };
 
@@ -122,10 +121,7 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка в логин, в App: ${err}`)
       })
-      .finally(() => {
-        setLoading(false);
-      })
-  }
+  };
 
   // разлогин
   const logout = () => {
@@ -135,7 +131,7 @@ function App() {
     setUserData({
       email: ''
     })
-    navigate('/signin', {replace: true});
+    navigate('/signin');
   };
 
   // загрузка
