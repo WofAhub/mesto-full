@@ -120,7 +120,7 @@ function App() {
   // получаю пользователя
   React.useEffect(() => {
     if (isloggedIn) {
-      api.currentUser()
+      api.getCurrentUser()
         .then((res) => {
           setCurrentUser(res.data);
         })
