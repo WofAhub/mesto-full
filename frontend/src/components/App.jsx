@@ -127,17 +127,8 @@ function App() {
 
   // вызываю текущие карточки
   React.useEffect(() => {
-    if(isLoggedIn) {
-    api
-      .getInitialCards()
-      .then((res) => {
-        console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
-        setCards(res.card)
-      })
-      .catch((err) => {
-        console.log(`Ошибка в getInitialCards, в App: ${err}`)
-      })
-    // вызываю текущую информацию о себе
+    if(!isLoggedIn) {
+      // вызываю текущую информацию о себе
       api
         .getCurrentUser()
         .then((res) => {
@@ -150,6 +141,15 @@ function App() {
     } else {
       console.log("Ошибка в вызовах карточки и юзера")
     }
+      api
+        .getInitialCards()
+        .then((res) => {
+          console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
+          setCards(res.card)
+        })
+        .catch((err) => {
+          console.log(`Ошибка в getInitialCards, в App: ${err}`)
+        })
   }, [isLoggedIn])
 
   // разлогин
