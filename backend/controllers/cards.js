@@ -88,7 +88,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Карточка не найдена 😔');
     })
-    .then((card) => res.status(200).send({ card, message: 'Лайк поставлен ❤' }))
+    .then((card) => res.status(200).send(card))
 
     .catch((err) => {
       if (err.name === 'CastError') {
