@@ -17,7 +17,8 @@ function AddPlacePopup({onAddPlace, isOpen, onClose, ...commonProps}) {
   React.useEffect(() => {
     formValue.name = '';
     formValue.link = '';
-  }, [formValue, isOpen])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   return (
     <PopupWithForm
