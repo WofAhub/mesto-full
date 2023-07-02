@@ -11,7 +11,7 @@ const ForbiddenError = require('../errors/ForbiddenError');
 module.exports.getCard = (req, res, next) => {
   Card
     .find({})
-    .populate('owner')
+    .populate(['owner', 'likes'])
     .then((cards) => res.status(200).send(cards))
     .catch((err) => {
       next(err);
@@ -30,8 +30,15 @@ module.exports.createCard = (req, res, next) => {
         owner: req.user._id,
       },
     )
-    .then((card) => res.status(201).send(card))
-
+    .then((card) => {
+      card
+        .populate(['owner', 'likes']);
+    })
+    .then((card) => {
+      res
+        .status(201)
+        .send(card);
+    })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         const errorFields = Object.keys(err.errors);
