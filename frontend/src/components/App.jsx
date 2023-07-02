@@ -124,14 +124,30 @@ function App() {
       })
   };
 
-  // вызываю текущую информацию о пользователе и карточки
-  // React.useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((res) => {
-  //       setCards(res.card)
-  //     })
-  // })
+  // вызываю текущие карточки
+  React.useEffect(() => {
+    if(isLoggedIn) {
+    api
+      .getInitialCards()
+      .then((res) => {
+        setCards(res.card)
+      })
+      .catch((err) => {
+        console.log(`Ошибка в getInitialCards, в App: ${err}`)
+      })
+    // вызываю текущую информацию о себе
+      api
+        .getCurrentUser()
+        .then((res) => {
+          setCurrentUser(res.user)
+        })
+        .catch((err) => {
+          console.log(`Ошибка в getCurrentUser, в App: ${err}`)
+        })
+    } else {
+      console.log("Ошибка в вызовах карточки и юзера")
+    }
+  }, [isLoggedIn])
 
   // разлогин
   const logout = () => {
