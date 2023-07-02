@@ -52,6 +52,7 @@ function App() {
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     setToken(jwt);
+    console.log(jwt, "Это jwt из useEffect, localStorage.getItem('jwt'), в App.jsx")
   }, []);
 
   // эффект, проверяющий наличие токена 
@@ -130,6 +131,7 @@ function App() {
     api
       .getInitialCards()
       .then((res) => {
+        console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
         setCards(res.card)
       })
       .catch((err) => {
@@ -139,6 +141,7 @@ function App() {
       api
         .getCurrentUser()
         .then((res) => {
+          console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
           setCurrentUser(res.user)
         })
         .catch((err) => {
