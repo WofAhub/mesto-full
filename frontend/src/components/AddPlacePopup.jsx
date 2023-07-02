@@ -17,7 +17,7 @@ function AddPlacePopup({onAddPlace, isOpen, onClose, ...commonProps}) {
   React.useEffect(() => {
     formValue.name = '';
     formValue.link = '';
-  }, [isOpen])
+  }, [formValue, isOpen])
 
   return (
     <PopupWithForm
