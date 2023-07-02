@@ -30,11 +30,11 @@ module.exports.createCard = (req, res, next) => {
         owner: req.user._id,
       },
     )
-    .populate(['owner'])
     .then((card) => {
       res
         .status(201)
-        .send(card);
+        .send(card)
+        .populate(['owner'])
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
