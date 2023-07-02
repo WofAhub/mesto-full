@@ -21,14 +21,13 @@ module.exports.getCard = (req, res, next) => {
 // создаем карточку
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
-  const owner = req.user._id;
 
   Card
     .create(
       {
         name,
         link,
-        owner,
+        owner: req.user._id,
       },
     )
     .then((card) => res.status(201).send(card))
