@@ -92,6 +92,9 @@ function App() {
         setIsSuccess(false);
         console.log(`Ошибка в регистрации, в App: ${err}`)
       })
+      .finally(() => {
+        setLoading(false);
+      })
   };
 
   // вспылывающий попап в случае удачной регистрации
@@ -120,6 +123,9 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка в логин, в App: ${err}`)
+      })
+      .finally(() => {
+        setLoading(false);
       })
   }
 
