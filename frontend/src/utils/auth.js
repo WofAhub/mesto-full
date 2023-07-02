@@ -3,6 +3,7 @@ export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 // универсальная функция
 const makeRequest = (url, method, body, token) => {
     const options = {
+        url,
         method,
         headers: {
             'Accept': 'application/json',
