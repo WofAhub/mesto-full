@@ -31,10 +31,6 @@ module.exports.createCard = (req, res, next) => {
       },
     )
     .then((card) => {
-      card
-        .populate(['owner', 'likes']);
-    })
-    .then((card) => {
       res
         .status(201)
         .send(card);
