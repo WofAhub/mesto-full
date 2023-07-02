@@ -67,11 +67,19 @@ function Main({
         </section>
 
         <section className="elements">
-          {cards.map(card => {
-            return (
-              <Card key={card._id} card={card} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
-            )
-          })}
+          {
+            cards.map(card => {
+              return (
+                <Card k
+                  ey={card._id} 
+                  card={card} 
+                  onCardClick={onCardClick} 
+                  onCardLike={onCardLike} 
+                  onCardDelete={onCardDelete} 
+                />
+              )
+            })
+          }
         </section>
         <Footer />
       </main>
