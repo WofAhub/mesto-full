@@ -67,7 +67,6 @@ function App() {
       .then((user) => {
         setUserData(user);
         setLoggedIn(true);
-        navigate('/')
       })
       .catch((err) => {
         console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
@@ -119,7 +118,6 @@ function App() {
         console.log(res, "Это res из login в App.jsx")
         localStorage.getItem('jwt', res.jwt)
         setToken(res.jwt);
-        navigate('/');
       })
       .catch((err) => {
         console.log(`Ошибка в логин, в App: ${err}`)
