@@ -85,8 +85,8 @@ function App() {
       .register(email, password)
       .then((res) => {
         console.log(res, "Это res из register в App.jsx")
-        localStorage.getItem('jwt', res.token)
-        setToken(res.token);
+        localStorage.getItem('jwt', token)
+        setToken(token);
         setIsSuccess(true);
         navigate('/sign-in');
       })
@@ -116,8 +116,8 @@ function App() {
       .login(email, password)
       .then((res) => {
         console.log(res, "Это res из login в App.jsx")
-        localStorage.getItem('jwt', res.token)
-        setToken(res.token);
+        localStorage.getItem('jwt', token)
+        setToken(token);
         navigate('/', { replace: true });
       })
       .catch((err) => {
