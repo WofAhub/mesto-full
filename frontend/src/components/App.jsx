@@ -91,6 +91,20 @@ function App() {
       })
   };
 
+  // вспылывающий попап в случае удачной регистрации
+  React.useEffect(() => {
+    if (isInfoTooltipPopupOpen && isSuccess) {
+      setTimeout(() => {
+        closeAllPopups();
+      }, 1200);
+
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 1500);
+    };
+    return () => clearTimeout(setTimeout);
+  }, [isInfoTooltipPopupOpen, isSuccess, closeAllPopups, setIsSuccess]);
+
   // логин
   const login = ({email, password}) => {
     auth
