@@ -21,7 +21,7 @@ import ProtectedRoute from "./ProtectedRoute";
 // function App
 function App() {
 
-  // const попапы
+  // стейт попапы
   const [isEditAvatarPopupOpen, isSetEditAvatarPopupOpen] =
     React.useState(false);
   const [isEditProfilePopupOpen, isSetEditProfilePopupOpen] =
@@ -29,115 +29,96 @@ function App() {
   const [isAddPlacePopupOpen, isSetAddPlacePopupOpen] = React.useState(false);
   const [isInfoTooltipPopupOpen, isSetInfoTooltipPopupOpen] = React.useState(false);
 
-  // const api
+  // стейт api
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
-  // const авторизация
-  const [isloggedIn, setLoggedIn] = React.useState(false);
+  // стейт авторизация
+  const [isLoggedIn, setLoggedIn] = React.useState(false);
   const [token, setToken] = React.useState('')
-  const [userData, setUserData] = React.useState('')
+  const [userData, setUserData] = React.useState({
+    email: ''
+  });
   const [isSuccess, setIsSuccess] = React.useState(false);
+
+  // стейт загрузка
+  const [isLoading, setLoading] = React.useState(true);
 
   // const навигация
   const navigate = useNavigate();
 
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   setToken(jwt);
-  //   console.log(jwt);
-  // }, []);
-  
-  // проверка токена эффект
+  // автоматический вход
   React.useEffect(() => {
-    checkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // проверка токена
-  const checkToken = () => {
-    if(localStorage.getItem('jwt')) {
     const jwt = localStorage.getItem('jwt');
-    auth.checkToken(jwt).then((res) => {
-      if (res) {
-        const userData = {
-          email: res.email,
-        }
-        setLoggedIn(true);
-        setUserData(userData);
-        navigate('/', {replace: true});
-      }
-    });
+    setToken(jwt);
+  }, []);
+
+  // эффект, проверяющий наличие токена 
+  //и дающий статус залогиненого пользователя, 
+  //если токен имеется, а затем переводит на главную страницу
+  //эффект зависит от регистрации, а точнее от токена в нем
+  React.useEffect(() => {
+    if(!token) {
+      return;
     }
-  }
-    
+    auth
+      .getMe(token)
+      .then((user) => {
+        setUserData(user);
+        setLoggedIn(true);
+        navigate('/', {replace: true})
+      })
+      .catch((err) => {
+        console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }, [navigate, token])
+
   // регистрация
-  function registerUser({ email, password }) {
+  const register = ({email, password}) => {
     auth
       .register(email, password)
       .then((res) => {
-        if(res) {
-        setIsSuccess(true);
-        navigate('/sign-in', { replace: true });
-        } else {
-          setIsSuccess(false);
-        }
+        console.log(res, "Это res из register в App.jsx")
+        localStorage.getItem('jwt', res.jwt)
+        setToken(res.jwt);
       })
       .catch((err) => {
-        console.log(`Ошибка в App, registerUser: ${err}`);
-      });
-  }
-
-  React.useEffect(() => {
-    if (isInfoTooltipPopupOpen && isSuccess) {
-      setTimeout(() => {
-        closeAllPopups();
-      }, 1200);
-
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 1500);
-    };
-
-    return () => clearTimeout(setTimeout);
-  }, [isInfoTooltipPopupOpen, isSuccess, closeAllPopups, setIsSuccess]);
+        console.log(`Ошибка в регистрации, в App: ${err}`)
+      })
+  };
 
   // логин
-  function loginUser({ email, password }) {
+  const login = ({email, password}) => {
     auth
       .login(email, password)
-      .then((token) => {
-        localStorage.setItem("jwt", token);
-        setToken(token);
-        setUserData(email);
-        setLoggedIn(true);
-        navigate('/', { replace: true });
+      .then((res) => {
+        console.log(res, "Это res из login в App.jsx")
+        localStorage.getItem('jwt', res.jwt)
+        setToken(res.jwt);
       })
       .catch((err) => {
-        console.log(`Ошибка в App, loginUser: ${err}`);
-      });
+        console.log(`Ошибка в логин, в App: ${err}`)
+      })
   }
 
-   // запрос на текущие данные о пользователе и получение карточек
-  React.useEffect(() => {
-    Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then(([user, card]) => {
-        setCurrentUser(user);
-        setCards(card);
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
-  }, []);
-
   // разлогин
-  function logOutUser() {
-    localStorage.removeItem("jwt");
-    setLoggedIn(false);
+  const logout = () => {
+    localStorage.removeItem('jwt');
+    isLoggedIn(false);
     setToken("");
-    setUserData("");
-    navigate('/sign-in', { replace: true });
+    setUserData({
+      email: ''
+    })
+    navigate('/signin', {replace: true});
+  };
+
+  // загрузка
+  if (isLoading) {
+    return <div>Загрузка...</div>
   }
 
   // попап информации о регистрации
@@ -260,21 +241,21 @@ function App() {
                 path="/sign-in"
                 element={
                   <Login
-                    onLogin={loginUser}
+                    onLogin={login}
                   />}
               />
               <Route
                 path="/sign-up"
                 element={
                   <Register
-                    onRegister={registerUser}
+                    onRegister={register}
                     onInfoTooltipClick={handleInfoTooltipPopupClick}
                   />}
               />
               <Route
                 path="*"
                 element={
-                  isloggedIn ? (
+                  isLoggedIn ? (
                     <Navigate to="/" replace />
                   ) : (
                     <Navigate to="/sign-up" replace />
@@ -285,7 +266,7 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute
-                    loggedIn={isloggedIn}
+                    loggedIn={isLoggedIn}
                     element=
                     {Main}
                     cards={cards}
@@ -295,7 +276,7 @@ function App() {
                     onCardClick={handleCardClick}
                     onCardLike={handleCardLike}
                     onCardDelete={handleCardDelete}
-                    logOut={logOutUser}
+                    logOut={logout}
                     userData={userData}
                   />
                 }

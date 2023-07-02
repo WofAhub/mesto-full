@@ -1,60 +1,58 @@
 export const BASE_URL = 'https://api.wofamesto.nomoreparties.sbs';
 
-// проверка ответа с сервера
-function checkAnswerFromServer(res) {
-    if (res.ok) {
-        return res.json();
-    } else {
-        return Promise.reject(`Ошибка: ${res.status}`);
+// универсальная функция
+const makeRequest = (url, method, body, token) => {
+    const options = {
+        method,
+        headers: {
+            'Accept': 'application/json',
+            "Content-Type": "application/json"
+        }
     }
+
+    if (body) {
+        options.body = JSON.stringify(body);
+    }
+
+    if (token === undefined) {
+        options.headers.Authorization = `Bearer ${token}`
+    }
+
+    return fetch(`$(BASE_URL)$(url)`, options)
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            console.log("Ошибка в makeRequest, then");
+            return Promise.reject(`Ошибка: ${res.status}`);
+        }
+    })
 }
 
 // регистрация
 export const register = (email, password) => {
-    return fetch(`${BASE_URL}/signup`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    })
-        .then(res => checkAnswerFromServer(res))
-        .then((res) => {
-            return res;
-        })
-        .catch((err) => {
-            console.log(`Ошибка в register, auth: ${err}`)
-        })
+    return makeRequest(
+        '/signup', 
+        'POST', 
+        {email, password}
+    )
 }
 
 // логин
 export const login = (email, password) => {
-    return fetch(`${BASE_URL}/signin`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-    })
-        .then(res => checkAnswerFromServer(res))
-        .then((data) => {
-            localStorage.setItem('jwt', data.jwt);
-            return data;
-        })
+    return makeRequest(
+        '/signin', 
+        'POST', 
+        {email, password}
+    )
 };
 
-// проверка токена
-export const checkToken = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-    })
-        .then(res => checkAnswerFromServer(res))
-        .then(data => data)
+// получение меня
+export const getMe = (token) => {
+    return makeRequest(
+        '/users/me', 
+        'GET',
+        null, 
+        token
+    )
 };
