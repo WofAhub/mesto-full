@@ -70,8 +70,8 @@ function Main({
           {
             cards.map(card => {
               return (
-                <Card k
-                  ey={card._id} 
+                <Card 
+                  key={card._id} 
                   card={card} 
                   onCardClick={onCardClick} 
                   onCardLike={onCardLike} 
