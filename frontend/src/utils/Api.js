@@ -4,6 +4,10 @@ class Api {
     this._headers = options.headres;
   }
 
+  _getHeaders() {
+    
+  }
+
   // получаем json, если ответ пришел
   _getJson (res) {
     if (res.ok) {

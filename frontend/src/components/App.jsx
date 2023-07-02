@@ -127,11 +127,11 @@ function App() {
 
   // вызываю текущие карточки и пользователя
   React.useEffect(() => {
-    if(!isLoggedIn) {
+    if(token) {
       Promise.all([api.getCurrentUser(), api.getInitialCards()])
-      .then((res) => {
-        setCurrentUser(res.user)
-        setCards(res.card)
+      .then(([user, card]) => {
+        setCurrentUser(user)
+        setCards(card)
       })
       .catch((err) => {
         console.log(`Ошибка в useEffect, Promise.all, в App: ${err}`)
@@ -139,7 +139,7 @@ function App() {
     } else {
       console.log("Ошибка в вызовах карточки и юзера")
     };
-  }, [isLoggedIn])
+  }, [token])
 
   // разлогин
   const logout = () => {
