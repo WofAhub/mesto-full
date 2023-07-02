@@ -125,31 +125,20 @@ function App() {
       })
   };
 
-  // вызываю текущие карточки
+  // вызываю текущие карточки и пользователя
   React.useEffect(() => {
     if(!isLoggedIn) {
-      // вызываю текущую информацию о себе
-      api
-        .getCurrentUser()
-        .then((res) => {
-          console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
-          setCurrentUser(res.user)
-        })
-        .catch((err) => {
-          console.log(`Ошибка в getCurrentUser, в App: ${err}`)
-        })
+      Promise.all([api.getCurrentUser(), api.getInitialCards()])
+      .then((res) => {
+        setCurrentUser(res.user)
+        setCards(res.card)
+      })
+      .catch((err) => {
+        console.log(`Ошибка в useEffect, Promise.all, в App: ${err}`)
+      })
     } else {
       console.log("Ошибка в вызовах карточки и юзера")
-    }
-      api
-        .getInitialCards()
-        .then((res) => {
-          console.log(res, "Это res из useEffect, getInitialCards, в App.jsx")
-          setCards(res.card)
-        })
-        .catch((err) => {
-          console.log(`Ошибка в getInitialCards, в App: ${err}`)
-        })
+    };
   }, [isLoggedIn])
 
   // разлогин
