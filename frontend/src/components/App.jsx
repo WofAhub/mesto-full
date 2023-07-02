@@ -21,7 +21,7 @@ import ProtectedRoute from "./ProtectedRoute";
 // function App
 function App() {
 
-  // стейт попапы
+  // const попапы
   const [isEditAvatarPopupOpen, isSetEditAvatarPopupOpen] =
     React.useState(false);
   const [isEditProfilePopupOpen, isSetEditProfilePopupOpen] =
@@ -29,28 +29,26 @@ function App() {
   const [isAddPlacePopupOpen, isSetAddPlacePopupOpen] = React.useState(false);
   const [isInfoTooltipPopupOpen, isSetInfoTooltipPopupOpen] = React.useState(false);
 
-  // стейт api
+  // const api
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
-  // стейт авторизация
-  const [isLoggedIn, setLoggedIn] = React.useState(false);
+  // const авторизация
+  const [isloggedIn, setLoggedIn] = React.useState(false);
   const [token, setToken] = React.useState('')
-  const [userData, setUserData] = React.useState({
-    email: ''
-  });
+  const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
-
-  // стейт загрузка
-  const [isLoading, setLoading] = React.useState(true);
 
   // const навигация
   const navigate = useNavigate();
 
+  // стейт загрузка
+  const [isLoading, setLoading] = React.useState(true);
+
   // автоматический вход
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem("jwt");
     setToken(jwt);
     console.log(jwt, "Это jwt из useEffect, localStorage.getItem('jwt'), в App.jsx")
   }, []);
@@ -60,16 +58,16 @@ function App() {
   //если токен имеется, а затем переводит на главную страницу
   //эффект зависит от регистрации, а точнее от токена в нем
   React.useEffect(() => {
-    if(!token) {
+    if (!token) {
       setLoading(false);
       return;
     }
     auth
-      .getMe(token)
+      .getContent(token)
       .then((user) => {
-        setUserData(user);
+        setUserData(user.email);
         setLoggedIn(true);
-        navigate('/',  { replace: true });
+        navigate('/', { replace: true });
       })
       .catch((err) => {
         console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
@@ -80,7 +78,7 @@ function App() {
   }, [navigate, token])
 
   // регистрация
-  const register = ({email, password}) => {
+  function registerUser({ email, password }) {
     auth
       .register(email, password)
       .then((res) => {
@@ -107,50 +105,50 @@ function App() {
         setIsSuccess(false);
       }, 1500);
     };
+
     return () => clearTimeout(setTimeout);
   }, [isInfoTooltipPopupOpen, isSuccess, closeAllPopups, setIsSuccess]);
 
   // логин
-  const login = ({email, password}) => {
+  function loginUser({ email, password }) {
     auth
       .login(email, password)
       .then((res) => {
         console.log(res, "Это res из login в App.jsx")
-        localStorage.getItem('jwt', token)
+        localStorage.setItem("jwt", token);
         setToken(token);
-        setUserData(email)
+        setUserData(email);
+        setLoggedIn(true);
         navigate('/', { replace: true });
       })
       .catch((err) => {
-        console.log(`Ошибка в логин, в App: ${err}`)
-      })
-  };
+        console.log(`Ошибка в App, loginUser: ${err}`);
+      });
+  }
 
-  // запрос на текущие данные о пользователе и получение карточек
+   // запрос на текущие данные о пользователе и получение карточек
   React.useEffect(() => {
     Promise.all([
-      api.getCurrentUser(),
-      api.getInitialCards(),
+      api.getCurrentUser(), 
+      api.getInitialCards()
     ])
-    .then(([users, cards]) => {
-      setCurrentUser(users)
-      setCards(cards);
-    })
-    .catch((err) => {
-      console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-    })
-  }, [])
+      .then(([users, cards]) => {
+        setCurrentUser(users);
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+      });
+  }, [isloggedIn]);
 
   // разлогин
-  const logout = () => {
-    localStorage.removeItem('jwt');
-    isLoggedIn(false);
+  function logOutUser() {
+    localStorage.removeItem("jwt");
+    setLoggedIn(false);
     setToken("");
-    setUserData({
-      email: ''
-    })
-    navigate('/sign-in', { replace: true }); 
-  };
+    setUserData("");
+    navigate('/sign-in', { replace: true });
+  }
 
   // загрузка
   if (isLoading) {
@@ -277,21 +275,21 @@ function App() {
                 path="/sign-in"
                 element={
                   <Login
-                    onLogin={login}
+                    onLogin={loginUser}
                   />}
               />
               <Route
                 path="/sign-up"
                 element={
                   <Register
-                    onRegister={register}
+                    onRegister={registerUser}
                     onInfoTooltipClick={handleInfoTooltipPopupClick}
                   />}
               />
               <Route
                 path="*"
                 element={
-                  isLoggedIn ? (
+                  isloggedIn ? (
                     <Navigate to="/" replace />
                   ) : (
                     <Navigate to="/sign-up" replace />
@@ -302,7 +300,7 @@ function App() {
                 path="/"
                 element={
                   <ProtectedRoute
-                    loggedIn={isLoggedIn}
+                    loggedIn={isloggedIn}
                     element=
                     {Main}
                     cards={cards}
@@ -312,7 +310,7 @@ function App() {
                     onCardClick={handleCardClick}
                     onCardLike={handleCardLike}
                     onCardDelete={handleCardDelete}
-                    logOut={logout}
+                    logOut={logOutUser}
                     userData={userData}
                   />
                 }

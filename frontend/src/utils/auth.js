@@ -49,7 +49,7 @@ export const login = (email, password) => {
 };
 
 // получение меня
-export const getMe = (token) => {
+export const getContent = (token) => {
     return makeRequest(
         '/users/me', 
         'GET',
