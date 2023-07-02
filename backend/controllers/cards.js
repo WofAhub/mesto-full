@@ -12,7 +12,7 @@ module.exports.getCard = (req, res, next) => {
   Card
     .find({})
     .populate('owner')
-    .then((cards) => res.status(200).send({ cards }))
+    .then((cards) => res.status(200).send(cards))
     .catch((err) => {
       next(err);
     });
@@ -30,7 +30,7 @@ module.exports.createCard = (req, res, next) => {
         owner: req.user._id,
       },
     )
-    .then((card) => res.status(201).send({ card }))
+    .then((card) => res.status(201).send(card))
 
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
@@ -87,7 +87,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Карточка не найдена 😔');
     })
-    .then((card) => res.status(200).send({ card, message: 'Лайк поставлен ❤' }))
+    .then((card) => res.status(200).send({ message: 'Лайк поставлен ❤' }))
 
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -109,7 +109,7 @@ module.exports.dislikeCard = (req, res, next) => Card
     throw new NotFoundError('Карточка не найдена 😔');
   })
 
-  .then((card) => res.status(200).send({ card, message: 'Лайк убран 💔' }))
+  .then((card) => res.status(200).send({ message: 'Лайк убран 💔' }))
 
   .catch((err) => {
     if (err.name === 'CastError') {

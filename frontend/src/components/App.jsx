@@ -69,7 +69,7 @@ function App() {
       .then((user) => {
         setUserData(user);
         setLoggedIn(true);
-        navigate('/');
+        navigate('/',  { replace: true });
       })
       .catch((err) => {
         console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
@@ -88,7 +88,7 @@ function App() {
         localStorage.getItem('jwt', token)
         setToken(token);
         setIsSuccess(true);
-        navigate('/sign-in');
+        navigate('/sign-in', { replace: true });
       })
       .catch((err) => {
         setIsSuccess(false);
@@ -96,7 +96,7 @@ function App() {
       })
   };
 
-  // вспылывающий попап в случае удачной регистрации
+  // вспылывающий попап в случае (не)удачной регистрации
   React.useEffect(() => {
     if (isInfoTooltipPopupOpen && isSuccess) {
       setTimeout(() => {
@@ -118,6 +118,7 @@ function App() {
         console.log(res, "Это res из login в App.jsx")
         localStorage.getItem('jwt', token)
         setToken(token);
+        setUserData(email)
         navigate('/', { replace: true });
       })
       .catch((err) => {
