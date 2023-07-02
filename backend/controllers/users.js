@@ -96,7 +96,7 @@ module.exports.getUserById = (req, res, next) => {
 
     .then((user) => res
       .status(200)
-      .send({ data: user }))
+      .send({ user }))
 
     .catch((err) => {
       if (err.name === 'CastError') {
