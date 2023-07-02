@@ -46,7 +46,7 @@ export const login = (email, password) => {
 };
 
 // проверка токена
-export const checkToken = (token) => {
+export const getContent = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
