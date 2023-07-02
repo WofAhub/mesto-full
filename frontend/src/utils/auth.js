@@ -19,12 +19,8 @@ export const register = (email, password) => {
         },
         body: JSON.stringify({ email, password })
     })
-        .then(res => checkAnswerFromServer(res))
         .then((res) => {
-            return res;
-        })
-        .catch((err) => {
-            console.log(`Ошибка в register, auth: ${err}`)
+            return checkAnswerFromServer(res)
         })
 }
 
@@ -38,15 +34,13 @@ export const login = (email, password) => {
         },
         body: JSON.stringify({ email, password })
     })
-        .then(res => checkAnswerFromServer(res))
-        .then((data) => {
-            localStorage.setItem('jwt', data.jwt);
-            return data;
+        .then((res) => {
+            return checkAnswerFromServer(res)
         })
 };
 
 // проверка токена
-export const getContent = (token) => {
+export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
@@ -55,6 +49,7 @@ export const getContent = (token) => {
             "Authorization": `Bearer ${token}`
         },
     })
-        .then(res => checkAnswerFromServer(res))
-        .then(data => data)
+        .then((res) => {
+            return checkAnswerFromServer(res)
+        })
 };

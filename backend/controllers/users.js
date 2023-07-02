@@ -16,6 +16,72 @@ const DublicateError = require('../errors/DublicateError');
 // соль
 const SAULT_ROUNDS = 10;
 
+// получаем всех пользователей
+module.exports.getUsersAll = (req, res, next) => {
+  User
+    .find({})
+    .orFail(() => {
+      throw new NotFoundError('Пользователи не найдены');
+    })
+    .then((users) => res.status(200).send(users))
+    .catch((err) => {
+      next(err);
+    });
+};
+
+// авторизация
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      return res.status(200).send({ token });
+    })
+    .catch(next);
+};
+
+// получаем пользователя по id
+module.exports.getUserById = (req, res, next) => {
+  User
+    .findById(req.params.id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователь по указанному _id не найден.');
+    })
+
+    .then((user) => res
+      .status(200)
+      .send({ user }))
+
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new ValidationError('Некорректный id пользователя'));
+      } else {
+        next(err);
+      }
+    });
+};
+
+// поиск меня
+module.exports.getMe = (req, res, next) => {
+  User
+    .findById(req.user._id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователь по указанному _id не найден.');
+    })
+    .then((user) => res
+      .status(200)
+      .send({ data: user }))
+
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new ValidationError('Некорректный id пользователя'));
+      } else {
+        next(err);
+      }
+    });
+};
+
 // создаем пользователя
 module.exports.createUser = (req, res, next) => {
   const {
@@ -55,72 +121,6 @@ module.exports.createUser = (req, res, next) => {
         next(new ValidationError(errorMessage));
       } else if (err.code === MONGO_DUBLICATE_ERROR) {
         next(new DublicateError('Пользователь с таким email уже существует'));
-      } else {
-        next(err);
-      }
-    });
-};
-
-// авторизация
-module.exports.login = (req, res, next) => {
-  const { email, password } = req.body;
-
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
-      return res.status(200).send({ token });
-    })
-    .catch(next);
-};
-
-// получаем всех пользователей
-module.exports.getUsersAll = (req, res, next) => {
-  User
-    .find({})
-    .orFail(() => {
-      throw new NotFoundError('Пользователи не найдены');
-    })
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      next(err);
-    });
-};
-
-// получаем пользователя по id
-module.exports.getUserById = (req, res, next) => {
-  User
-    .findById(req.params.id)
-    .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному _id не найден.');
-    })
-
-    .then((user) => res
-      .status(200)
-      .send({ user }))
-
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new ValidationError('Некорректный id пользователя'));
-      } else {
-        next(err);
-      }
-    });
-};
-
-// поиск меня
-module.exports.getMe = (req, res, next) => {
-  User
-    .findById(req.user._id)
-    .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному _id не найден.');
-    })
-    .then((user) => res
-      .status(200)
-      .send({ user }))
-
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new ValidationError('Некорректный id пользователя'));
       } else {
         next(err);
       }

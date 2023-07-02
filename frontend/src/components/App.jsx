@@ -36,46 +36,36 @@ function App() {
 
   // const авторизация
   const [isloggedIn, setLoggedIn] = React.useState(false);
-  const [token, setToken] = React.useState('')
   const [userData, setUserData] = React.useState('')
   const [isSuccess, setIsSuccess] = React.useState(false);
 
   // const навигация
   const navigate = useNavigate();
 
-  // стейт загрузка
-  const [isLoading, setLoading] = React.useState(true);
-
-  // автоматический вход
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setToken(jwt);
-    console.log(jwt, "Это jwt из useEffect, localStorage.getItem('jwt'), в App.jsx")
-  }, []);
-
-  // эффект, проверяющий наличие токена 
-  //и дающий статус залогиненого пользователя, 
-  //если токен имеется, а затем переводит на главную страницу
-  //эффект зависит от регистрации, а точнее от токена в нем
-  React.useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    auth
-      .getContent(token)
-      .then((user) => {
-        setUserData(user.email);
-        setLoggedIn(true);
-        navigate('/', { replace: true });
+  // проверка токена
+  function checkToken() {
+    const token = localStorage.getItem('token');
+  
+    if (token) {
+      auth
+      .checkToken(token)
+      .then((res) => {
+        if (res.data) {
+          setUserData(res.data.email);
+          setLoggedIn(true);
+          navigate('/', {replace: true});
+        }
       })
       .catch((err) => {
-        console.log(`Ошибка в эффекте, зависящем от регистрации, в App: ${err}`)
-      })
-      .finally(() => {
-        setLoading(false);
-      })
-  }, [navigate, token])
+        console.log(`Ошибка в checkToken, в App: ${err.status}`);
+      });
+    }    
+  }
+  
+    React.useEffect(() => {
+      checkToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
   // регистрация
   function registerUser({ email, password }) {
@@ -83,8 +73,6 @@ function App() {
       .register(email, password)
       .then((res) => {
         console.log(res, "Это res из register в App.jsx")
-        localStorage.getItem('jwt', token)
-        setToken(token);
         setIsSuccess(true);
         navigate('/sign-in', { replace: true });
       })
@@ -113,46 +101,54 @@ function App() {
   function loginUser({ email, password }) {
     auth
       .login(email, password)
-      .then((res) => {
-        console.log(res, "Это res из login в App.jsx")
-        localStorage.setItem("jwt", token);
-        setToken(token);
+      .then((data) => {
+        if(data.token) {
+        console.log(data, "Это res из login в App.jsx")
         setUserData(email);
+        localStorage.setItem('token', data.token);
         setLoggedIn(true);
         navigate('/', { replace: true });
+        }
       })
       .catch((err) => {
+        setIsSuccess(false);
+        isSetInfoTooltipPopupOpen(true);
         console.log(`Ошибка в App, loginUser: ${err}`);
       });
   }
 
-   // запрос на текущие данные о пользователе и получение карточек
+  // получаю пользователя
   React.useEffect(() => {
-    Promise.all([
-      api.getCurrentUser(), 
+    if (isloggedIn) {
+      api.getUserInfo()
+        .then((res) => {
+          setCurrentUser(res.data);
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err.status}`);
+        });
+    }
+  }, [isloggedIn]);
+
+  // получаю карточки
+  React.useEffect(() => {
+    if (isloggedIn) {
       api.getInitialCards()
-    ])
-      .then(([users, cards]) => {
-        setCurrentUser(users);
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
-      });
+        .then((data) => {
+          setCards(data.reverse());
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err.status}`);
+        });
+    }
   }, [isloggedIn]);
 
   // разлогин
   function logOutUser() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     setLoggedIn(false);
-    setToken("");
     setUserData("");
     navigate('/sign-in', { replace: true });
-  }
-
-  // загрузка
-  if (isLoading) {
-    return <div>Загрузка...</div>
   }
 
   // попап информации о регистрации

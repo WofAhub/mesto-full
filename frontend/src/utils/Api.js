@@ -1,7 +1,7 @@
 class Api {
-  constructor(options) {
-    this._fetchUrl = options.fetchUrl;
-    this._headers = options.headres;
+  constructor({ fetchUrl, headers }) {
+    this._fetchUrl = fetchUrl;
+    this._headers = headers;
   }
 
   // получаем json, если ответ пришел
@@ -13,20 +13,36 @@ class Api {
     }
   }
 
+  // устанавливаю головы
+  _setHeaders () {
+    const token = localStorage.getItem('token');
+    return {
+      'Authorization': `Bearer ${token}`,
+      ...this._headers,
+    };
+  }
+
   // получаем карточки с сервера
   getInitialCards() {
     return fetch(`${this._fetchUrl}/cards`, {
-      method: "GET",
-      headers: this._headers
+      headers: this._setHeaders(),
     })
     .then(this._getJson)
+  }
+
+  // получаем информацию о пользователе
+  getCurrentUser() {
+    return fetch (`${this._fetchUrl}/users/me`, {
+      headers: this._setHeaders(),
+    })
+    .then(this._getJson);
   }
 
   // создаем новые карточки на сервер
   createCardByPopup(data) {
     return fetch (`${this._fetchUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: this._setHeaders(),
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -39,7 +55,7 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._fetchUrl}/cards/${id}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this._setHeaders(),
     })
     .then(this._getJson);
   }
@@ -48,7 +64,7 @@ class Api {
   like(id) {
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "PUT",
-      headers: this._headers,
+      headers: this._setHeaders(),
     })
     .then(this._getJson);
   }
@@ -57,16 +73,7 @@ class Api {
   dislike(id, token) {
     return fetch(`${this._fetchUrl}/cards/${id}/likes`, {
       method: "DELETE",
-      headers: this._headers
-    })
-    .then(this._getJson);
-  }
-
-  // получаем информацию о пользователе
-  getCurrentUser() {
-    return fetch (`${this._fetchUrl}/users/me`, {
-      method: "GET",
-      headers: this._headers,
+      headers: this._setHeaders(),
     })
     .then(this._getJson);
   }
@@ -75,7 +82,7 @@ class Api {
   editUserInfo(data) {
     return fetch(`${this._fetchUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._setHeaders(),
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -88,7 +95,7 @@ class Api {
   editUserAvatar(data) {
     return fetch(`${this._fetchUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._setHeaders(),
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -111,6 +118,5 @@ export const api = new Api({
   headers: {
   'Accept': 'application/json',
   'Content-type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem('jwt')}`
   }
 })
