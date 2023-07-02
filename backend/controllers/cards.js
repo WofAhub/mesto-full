@@ -30,6 +30,7 @@ module.exports.createCard = (req, res, next) => {
         owner: req.user._id,
       },
     )
+    .populate(['owner'])
     .then((card) => {
       res
         .status(201)
