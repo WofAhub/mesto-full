@@ -19,7 +19,7 @@ const makeRequest = (url, method, body, token) => {
         options.headers.Authorization = `Bearer ${token}`
     }
 
-    return fetch(`$(BASE_URL)$(url)`, options)
+    return fetch(`${BASE_URL}${url}`, options)
     .then((res) => {
         if (res.ok) {
             return res.json();
