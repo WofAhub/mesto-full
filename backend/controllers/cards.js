@@ -110,7 +110,7 @@ module.exports.dislikeCard = (req, res, next) => Card
     throw new NotFoundError('Карточка не найдена 😔');
   })
 
-  .then((card) => res.status(200).send({ card, message: 'Лайк убран 💔' }))
+  .then((card) => res.status(200).send(card))
 
   .catch((err) => {
     if (err.name === 'CastError') {
