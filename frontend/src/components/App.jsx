@@ -85,8 +85,11 @@ function App() {
         console.log(res, "Это res из register в App.jsx")
         localStorage.getItem('jwt', res.jwt)
         setToken(res.jwt);
+        setIsSuccess(true);
+        navigate('/sign-in', {replace: true});
       })
       .catch((err) => {
+        setIsSuccess(false);
         console.log(`Ошибка в регистрации, в App: ${err}`)
       })
   };
