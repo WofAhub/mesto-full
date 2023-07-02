@@ -80,7 +80,7 @@ module.exports.getUsersAll = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Пользователи не найдены');
     })
-    .then((users) => res.status(200).send(users))
+    .then((users) => res.status(200).send({ users }))
     .catch((err) => {
       next(err);
     });
@@ -116,7 +116,7 @@ module.exports.getMe = (req, res, next) => {
     })
     .then((user) => res
       .status(200)
-      .send(user))
+      .send({ user }))
 
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -144,7 +144,7 @@ module.exports.updateUser = (req, res, next) => {
         upsert: false,
       },
     )
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(200).send({ user }))
 
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
@@ -171,7 +171,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
         runValidators: true,
       },
     )
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(200).send({ user }))
 
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {

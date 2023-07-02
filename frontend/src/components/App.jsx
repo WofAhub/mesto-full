@@ -125,21 +125,20 @@ function App() {
       })
   };
 
-  // вызываю текущие карточки и пользователя
-  // React.useEffect(() => {
-  //   if(token) {
-  //     Promise.all([api.getCurrentUser(), api.getInitialCards()])
-  //     .then(([user, card]) => {
-  //       setCurrentUser(user)
-  //       setCards(card)
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Ошибка в useEffect, Promise.all, в App: ${err}`)
-  //     })
-  //   } else {
-  //     console.log("Ошибка в вызовах карточки и юзера")
-  //   };
-  // }, [token])
+  // запрос на текущие данные о пользователе и получение карточек
+  React.useEffect(() => {
+    Promise.all([
+      api.getCurrentUser(),
+      api.getInitialCards(),
+    ])
+    .then(([users, cards]) => {
+      setCurrentUser(users)
+      setCards(cards);
+    })
+    .catch((err) => {
+      console.log(`Ошибка в App, React.useEffect, PromiseAll: ${err}`);
+    })
+  }, [])
 
   // разлогин
   const logout = () => {
