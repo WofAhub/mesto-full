@@ -124,6 +124,30 @@ function App() {
       })
   };
 
+  // вызываю текущую информацию о пользователе
+  React.useEffect(() => {
+    api
+      .getCurrentUser()
+      .then((user) => {
+        setCurrentUser(user);
+      })
+      .catch((err) => {
+        console.log(`Ошибка в эффекте, getCurrentUser, в App: ${err}`)
+      })
+  }, []);
+
+    // вызываю карточки
+    React.useEffect(() => {
+      api
+        .getInitialCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.log(`Ошибка в эффекте, getInitialCards, в App: ${err}`)
+        })
+    }, []);
+
   // разлогин
   const logout = () => {
     localStorage.removeItem('jwt');
