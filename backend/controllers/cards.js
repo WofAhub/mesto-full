@@ -106,7 +106,6 @@ module.exports.dislikeCard = (req, res, next) => Card
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-  .populate(['owner', 'likes'])
   .orFail(() => {
     throw new NotFoundError('Карточка не найдена 😔');
   })
