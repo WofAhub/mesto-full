@@ -31,9 +31,11 @@ module.exports.createCard = (req, res, next) => {
       },
     )
     .then((card) => {
-      res
-        .status(201)
-        .send(card);
+      card
+        .populate('owner')
+        .then(() => {
+          res.status(201).send(card);
+        });
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
@@ -106,6 +108,7 @@ module.exports.dislikeCard = (req, res, next) => Card
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+  .populate(['owner', 'likes'])
   .orFail(() => {
     throw new NotFoundError('Карточка не найдена 😔');
   })
